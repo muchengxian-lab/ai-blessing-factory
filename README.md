@@ -17,7 +17,7 @@
 - 腾讯混元大模型（文生文+文生图）
 - Canvas 2D海报合成
 
-## 项目文件
+## 项目文件（79个）
 | 文件 | 说明 |
 |------|------|
 | [PRD-祝福工厂.md](PRD-祝福工厂.md) | 产品需求文档（8段式） |
@@ -28,9 +28,13 @@
 | [task_plan.md](task_plan.md) | 任务计划+阶段跟踪 |
 | [findings.md](findings.md) | 调研数据+竞品分析 |
 | [progress.md](progress.md) | 进度日志 |
+| `miniprogram/` | 69个代码文件（4页+7组件+4云函数+7工具库） |
 
 ## 首个节点
 父亲节 2026年6月21日（倒计时19天）
+
+## 仓库
+https://github.com/muchengxian-lab/ai-blessing-factory
 
 ## ⚠️ 开发前必读
 **[SKILLS.md](SKILLS.md)** — 包含微信小程序CSS兼容性、混元AI调用方式、数据安全规则、代码审查强制项。

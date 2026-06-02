@@ -2,6 +2,7 @@
   "appid": "",
   "projectname": "ai-blessing-factory",
   "miniprogramRoot": "./",
+  "cloudfunctionRoot": "cloudfunctions/",
   "compileType": "miniprogram",
   "libVersion": "3.15.1",
   "setting": {

@@ -168,8 +168,9 @@
 
 ---
 
-## 五、项目文件索引
+## 五、项目文件索引（79个文件）
 
+### 产品文档
 | 文件 | 角色 | 状态 |
 |------|------|------|
 | PRD-祝福工厂.md | 产品需求文档（8段式） | ✅ |
@@ -182,15 +183,25 @@
 | SKILLS.md | 本文件 | ✅ |
 | README.md | 项目说明 | ✅ |
 | .gitignore | Git忽略配置 | ✅ |
-| miniprogram/ | 小程序代码 | ⏳ 待开发 |
+
+### 代码（miniprogram/69文件）
+| 目录 | 文件数 | 说明 |
+|------|:--:|------|
+| 根配置 | 5 | app.js/json/wxss + project.config.json + sitemap.json |
+| pages/ | 16 | index / preview / history / mine（每页4文件） |
+| components/ | 28 | 7组件 × 4文件 |
+| cloudfunctions/ | 9 | generateBlessing(3) + listHistory(2) + trackShare(2) + getStats(2) |
+| utils/ | 7 | config/holidays/theme/prompt/copywriting/api/poster |
+
+### GitHub
+- https://github.com/muchengxian-lab/ai-blessing-factory
 
 ### 待创建（后续阶段）
-
 | 文件 | 阶段 |
 |------|------|
 | 冷启动指标体系.md | 阶段4冷启动 |
 | 冷启动推广素材.md | 阶段4冷启动 |
-| miniprogram/CODE_REVIEW.md | 开发完成后 |
+| miniprogram/CODE_REVIEW.md | 代码审查后 |
 
 ---
 

@@ -13,7 +13,10 @@
 ---
 
 ## 当前阶段
-阶段 1：MVP规划
+阶段 2：MVP开发（代码完成，待GUI配置）
+
+## 项目链接
+- **GitHub:** https://github.com/muchengxian-lab/ai-blessing-factory
 
 ---
 
@@ -30,14 +33,28 @@
 - **状态：** complete
 
 ### 阶段 2：MVP开发
-- [ ] 项目初始化（微信开发者工具 + 云开发环境）
-- [ ] 首页：节日选择 + 对象选择 + 风格选择
-- [ ] AI文案生成（混元文生文）
-- [ ] 祝福海报生成（混元文生图 + Canvas）
-- [ ] 分享功能（微信转发好友/群聊/朋友圈）
-- [ ] 历史记录页
-- [ ] 基础UI打磨
-- [ ] 测试 + Bug修复
+- [x] 项目初始化（微信原生 + 云开发项目结构）
+- [x] 7个工具库：config/holidays/theme/prompt/copywriting/api/poster
+- [x] 首页：节日选择 + 对象选择 + 风格选择 + 生成按钮
+- [x] 海报预览页：3版文案切换 + Canvas海报 + 复制/分享/保存
+- [x] 历史记录页：倒序列表 + 空状态
+- [x] 我的页：节日提醒 + 关于 + 反馈
+- [x] 7个组件：3个picker + blessing-card + poster-canvas + empty/loading-state + tab-bar
+- [x] 4个云函数：generateBlessing（频控+Fallback）/ listHistory / trackShare / getStats
+- [x] 云函数npm依赖安装
+- [x] CSS兼容性修复（gap→margin）
+- [x] Git初始提交 + GitHub仓库创建
+- [ ] **待GUI操作**：微信开发者工具导入 + 注册小程序 + 开通云开发 + 部署云函数
+- **状态：** complete（代码部分）
+
+### 阶段 2.1：GUI配置（需手动操作）
+- [ ] 注册新小程序（AppID）- mp.weixin.qq.com
+- [ ] 小程序命名（建议3备选：祝福工厂/AI祝福管家/传情祝福，先查商标）
+- [ ] 微信开发者工具导入项目
+- [ ] 开通云开发环境 + 创建blessings/share_events集合
+- [ ] 部署4个云函数
+- [ ] 修改app.js中的云环境ID
+- [ ] 真机预览测试
 - **状态：** pending
 
 ### 阶段 3：提审与上线
