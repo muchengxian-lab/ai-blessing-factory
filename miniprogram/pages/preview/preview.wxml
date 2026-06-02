@@ -1,0 +1,56 @@
+<view class="page-container">
+  <!-- Loading state -->
+  <view class="loading-wrap" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">正在加载祝福...</text>
+  </view>
+
+  <!-- Content -->
+  <block wx:else>
+    <!-- Blessing Texts -->
+    <view class="section">
+      <view class="section-title">
+        {{holiday}}祝福
+        <text class="version-tag">{{currentIndex + 1}}/{{blessings.length}}</text>
+      </view>
+      <blessing-card
+        text="{{currentText}}"
+        index="{{currentIndex}}"
+        total="{{blessings.length}}"
+        bind:prev="onPrev"
+        bind:next="onNext"
+      />
+    </view>
+
+    <!-- Actions -->
+    <view class="actions">
+      <button class="action-btn" bindtap="onCopy">
+        <text class="action-icon">📋</text>
+        <text>复制文案</text>
+      </button>
+      <button class="action-btn" bindtap="onRegenerate" loading="{{regenerating}}">
+        <text class="action-icon">🔄</text>
+        <text>换一批</text>
+      </button>
+    </view>
+
+    <!-- Poster Preview -->
+    <view class="section">
+      <view class="section-title">🎨 祝福海报</view>
+      <poster-canvas
+        text="{{currentText}}"
+        emoji="{{holidayEmoji}}"
+        styleId="{{styleId}}"
+        bind:save="onSavePoster"
+      />
+      <view class="poster-actions">
+        <button class="btn-primary share-btn" bindtap="onSharePoster">
+          📤 分享给好友
+        </button>
+        <button class="btn-secondary save-btn" bindtap="onSavePoster">
+          💾 保存到相册
+        </button>
+      </view>
+    </view>
+  </block>
+</view>

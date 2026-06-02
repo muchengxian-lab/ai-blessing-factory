@@ -1,0 +1,23 @@
+.picker-scroll { white-space: nowrap; }
+.picker-row { display: flex; padding: 8rpx 0; }
+.picker-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 140rpx;
+  min-width: 140rpx;
+  height: 120rpx;
+  margin-right: 16rpx;
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  border: 2rpx solid var(--border);
+  transition: all 0.2s;
+}
+.picker-emoji { font-size: 40rpx; margin-bottom: 4rpx; }
+.picker-name { font-size: 22rpx; color: var(--text-light); }
+.picker-active {
+  border-color: var(--primary);
+  background: linear-gradient(135deg, rgba(255,107,53,0.08), rgba(255,140,90,0.04));
+}
+.picker-active .picker-name { color: var(--primary); font-weight: 600; }

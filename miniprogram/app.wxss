@@ -1,0 +1,67 @@
+page {
+  --primary: #FF6B35;
+  --primary-light: #FF8C5A;
+  --bg: #FFF8F0;
+  --bg-card: #FFFFFF;
+  --text: #2D2D2D;
+  --text-light: #8E8E8E;
+  --border: #F0E8DD;
+  --shadow: 0 2px 12px rgba(0,0,0,0.06);
+  --radius: 16rpx;
+  --radius-lg: 24rpx;
+
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  font-size: 28rpx;
+  line-height: 1.6;
+}
+
+/* 6套风格主题色 */
+.theme-warm { --primary: #FF6B35; --primary-light: #FF8C5A; }
+.theme-formal { --primary: #2C5282; --primary-light: #3B82F6; }
+.theme-humor { --primary: #EAB308; --primary-light: #FCD34D; }
+.theme-literary { --primary: #8B5CF6; --primary-light: #A78BFA; }
+.theme-classic { --primary: #166534; --primary-light: #22C55E; }
+.theme-minimal { --primary: #6B7280; --primary-light: #9CA3AF; }
+
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 96rpx;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: #fff;
+  font-size: 32rpx;
+  font-weight: 600;
+  border: none;
+  margin: 0;
+  padding: 0 48rpx;
+}
+.btn-primary[disabled] {
+  background: #E0E0E0;
+  color: #B0B0B0;
+}
+
+.card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: 32rpx;
+}
+
+.page-container {
+  min-height: 100vh;
+  padding: 24rpx;
+  padding-bottom: 120rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 20rpx;
+}
+
+::-webkit-scrollbar { width: 0; height: 0; }

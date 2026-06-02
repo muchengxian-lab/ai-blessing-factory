@@ -1,0 +1,17 @@
+.empty-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 60rpx;
+}
+.empty-emoji { font-size: 80rpx; margin-bottom: 24rpx; }
+.empty-text {
+  font-size: 28rpx;
+  color: var(--text-light);
+  text-align: center;
+  white-space: pre-wrap;
+  line-height: 1.8;
+  margin-bottom: 40rpx;
+}
+.empty-btn { width: 240rpx; height: 80rpx; font-size: 28rpx; }

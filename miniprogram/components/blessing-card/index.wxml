@@ -1,0 +1,12 @@
+<view class="blessing-card card">
+  <view class="blessing-text">{{text}}</view>
+  <view class="blessing-nav">
+    <view class="nav-btn {{index <= 0 ? 'nav-disabled' : ''}}" bindtap="onPrev">
+      ◀ 上一个
+    </view>
+    <text class="nav-indicator">{{index + 1}} / {{total}}</text>
+    <view class="nav-btn {{index >= total - 1 ? 'nav-disabled' : ''}}" bindtap="onNext">
+      下一个 ▶
+    </view>
+  </view>
+</view>

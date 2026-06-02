@@ -1,0 +1,33 @@
+<view class="page-container">
+  <view class="page-title">历史祝福</view>
+
+  <empty-state
+    wx:if="{{list.length === 0 && !loading}}"
+    text="还没有生成过祝福 ✨\n去首页试试？"
+    showBtn="{{true}}"
+    btnText="去首页"
+    bind:btntap="goHome"
+  />
+
+  <view class="history-list" wx:else>
+    <view
+      class="history-item card"
+      wx:for="{{list}}"
+      wx:key="_id"
+      bindtap="onTap"
+      data-id="{{item._id}}"
+    >
+      <view class="item-header">
+        <text class="item-emoji">{{item.holidayEmoji || '✨'}}</text>
+        <view class="item-info">
+          <text class="item-holiday">{{item.holiday}} · {{item.target}}</text>
+          <text class="item-time">{{item.timeText}}</text>
+        </view>
+        <text class="item-arrow">›</text>
+      </view>
+      <view class="item-preview">{{item.preview}}</view>
+    </view>
+  </view>
+
+  <tab-bar current="{{1}}" />
+</view>

@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "祝福详情",
+  "usingComponents": {
+    "blessing-card": "/components/blessing-card/index",
+    "poster-canvas": "/components/poster-canvas/index"
+  }
+}

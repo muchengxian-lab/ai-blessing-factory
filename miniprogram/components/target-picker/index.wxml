@@ -1,0 +1,13 @@
+<view class="target-grid">
+  <view
+    class="target-item {{item.id === active ? 'target-active' : ''}}"
+    wx:for="{{targets}}"
+    wx:key="id"
+    wx:for-item="item"
+    bindtap="onSelect"
+    data-id="{{item.id}}"
+  >
+    <text class="target-emoji">{{item.emoji}}</text>
+    <text class="target-name">{{item.name}}</text>
+  </view>
+</view>

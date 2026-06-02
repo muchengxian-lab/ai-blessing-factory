@@ -1,0 +1,36 @@
+<view class="page-container">
+  <view class="page-title">我的</view>
+
+  <view class="menu-list">
+    <view class="menu-item card" bindtap="onToggleRemind">
+      <text class="menu-icon">🔔</text>
+      <text class="menu-label">节日提醒</text>
+      <text class="menu-value">{{remindEnabled ? '已开启' : '已关闭'}}</text>
+    </view>
+
+    <view class="menu-item card" bindtap="onAbout">
+      <text class="menu-icon">ℹ️</text>
+      <text class="menu-label">关于AI祝福工厂</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+    <view class="menu-item card" bindtap="onFeedback">
+      <text class="menu-icon">💬</text>
+      <text class="menu-label">反馈与建议</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+    <button class="menu-item card share-item" open-type="share">
+      <text class="menu-icon">📤</text>
+      <text class="menu-label">推荐给朋友</text>
+      <text class="menu-arrow">›</text>
+    </button>
+  </view>
+
+  <view class="footer">
+    <text>AI祝福工厂 v1.0</text>
+    <text class="footer-sub">AI生成，仅供参考 · 祝福由心</text>
+  </view>
+
+  <tab-bar current="{{2}}" />
+</view>

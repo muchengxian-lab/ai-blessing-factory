@@ -1,0 +1,15 @@
+<scroll-view class="picker-scroll" scroll-x="true">
+  <view class="picker-row">
+    <view
+      class="picker-item {{item.id === active ? 'picker-active' : ''}}"
+      wx:for="{{holidays}}"
+      wx:key="id"
+      wx:for-item="item"
+      bindtap="onSelect"
+      data-id="{{item.id}}"
+    >
+      <text class="picker-emoji">{{item.emoji}}</text>
+      <text class="picker-name">{{item.name}}</text>
+    </view>
+  </view>
+</scroll-view>

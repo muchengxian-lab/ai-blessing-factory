@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "历史祝福",
+  "usingComponents": {
+    "empty-state": "/components/empty-state/index",
+    "tab-bar": "/components/tab-bar/index"
+  }
+}

@@ -1,0 +1,22 @@
+.blessing-card { margin-bottom: 0; }
+.blessing-text {
+  font-size: 32rpx;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  min-height: 200rpx;
+}
+.blessing-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 24rpx;
+  padding-top: 20rpx;
+  border-top: 1rpx solid var(--border);
+}
+.nav-btn {
+  font-size: 26rpx;
+  color: var(--primary);
+  padding: 8rpx 16rpx;
+}
+.nav-disabled { color: var(--text-light); }
+.nav-indicator { font-size: 24rpx; color: var(--text-light); }

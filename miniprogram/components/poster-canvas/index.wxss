@@ -1,0 +1,10 @@
+.poster-wrap {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.1);
+}
+.poster-canvas {
+  width: 100%;
+  display: block;
+}

@@ -1,0 +1,12 @@
+module.exports = {
+  CLOUD_ENV: 'cloud1-7g7h5h7h5h7h5h7',
+  MAX_FREE_PER_DAY: 10,
+  RATE_LIMIT_SECONDS: 30,
+  BLESSING_MIN_LENGTH: 50,
+  BLESSING_MAX_LENGTH: 300,
+  POSTER_WIDTH: 1080,
+  POSTER_HEIGHT: 1920,
+  FALLBACK_POSTER_BG: 'cloud://default-poster-bg.png',
+  MSG_SEC_CHECK: true,
+  TEMPERATURE_BASE: 0.85,
+};

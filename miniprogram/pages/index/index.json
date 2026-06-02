@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "AI祝福工厂",
+  "usingComponents": {
+    "holiday-picker": "/components/holiday-picker/index",
+    "target-picker": "/components/target-picker/index",
+    "style-picker": "/components/style-picker/index",
+    "tab-bar": "/components/tab-bar/index"
+  }
+}
