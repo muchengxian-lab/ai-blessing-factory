@@ -168,7 +168,7 @@
 
 ---
 
-## 五、项目文件索引（86个文件）
+## 五、项目文件索引（88个文件）
 
 ### 产品文档
 | 文件 | 角色 | 状态 |
@@ -184,13 +184,13 @@
 | README.md | 项目说明 | ✅ |
 | .gitignore | Git忽略配置 | ✅ |
 
-### 代码（miniprogram/76文件）
+### 代码（miniprogram/78文件）
 | 目录 | 文件数 | 说明 |
 |------|:--:|------|
 | 根配置 | 5 | app.js/json/wxss + project.config.json + sitemap.json |
 | pages/ | 16 | index / preview / history / mine（每页4文件） |
 | components/ | 28 | 7组件 × 4文件 |
-| cloudfunctions/ | 9 | generateBlessing(3) + listHistory(2) + trackShare(2) + getStats(2) |
+| cloudfunctions/ | 11 | generateBlessing(3) + getBlessing(2) + listHistory(2) + trackShare(2) + getStats(2) |
 | utils/ | 7 | config/holidays/theme/prompt/copywriting/api/poster |
 
 ### GitHub

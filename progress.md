@@ -55,7 +55,23 @@
   - `c638677` fix: 导航栏适配暗色主题
 - 代码统计：86个文件（+6 SVG图标）
 
-### 阶段 2.1：GUI配置
+### 阶段 2.2：UI改版 — 星云夜幕
+- **状态：** complete
+- 执行：暗色玻璃拟态设计系统 + 6个SVG图标 + 全部组件适配
+
+### 阶段 2.3：代码审查修复
+- **状态：** complete
+- **时间：** 2026-06-03
+- 执行：
+  - 安全红线：数据权限改云函数+userId校验 / msgSecCheck接入 / 频控收紧30s1次 / AI调用统一cloud.openapi
+  - 兼容性：WXSS伪元素改真实view
+  - 功能：海报保存绑定poster-canvas
+  - 工程化：wx-server-sdk固定~3.0.0 / uploadWithSourceMap:false / private.config移出Git
+  - 新增getBlessing云函数（所有权校验）
+- Git提交：`d2d5fb4` fix: 代码审查问题修复
+- 代码统计：88个文件（+getBlessing云函数）
+
+### 阶段 2.4：GUI配置
 - **状态：** pending
 - 待操作：
   - 注册新小程序（AppID）

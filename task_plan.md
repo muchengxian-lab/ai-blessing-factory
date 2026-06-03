@@ -13,7 +13,7 @@
 ---
 
 ## 当前阶段
-阶段 2：MVP开发（代码+UI完成，待GUI配置）
+阶段 2.4：GUI配置（代码+UI+安全审查全部完成，共88文件）
 
 ## UI设计系统
 - **风格：** 星云夜幕（暗色玻璃拟态）
@@ -48,19 +48,38 @@
 - [x] 历史记录页：倒序列表 + 空状态
 - [x] 我的页：节日提醒 + 关于 + 反馈
 - [x] 7个组件：3个picker + blessing-card + poster-canvas + empty/loading-state + tab-bar
-- [x] 4个云函数：generateBlessing（频控+Fallback）/ listHistory / trackShare / getStats
-- [x] 云函数npm依赖安装
-- [x] CSS兼容性修复（gap→margin）
+- [x] 5个云函数：generateBlessing（msgSecCheck+频控+Fallback）/ listHistory / getBlessing / trackShare / getStats
+- [x] 云函数npm依赖安装（wx-server-sdk固定~3.0.0）
+- [x] CSS兼容性修复（gap→margin、伪元素→真实view）
+- [x] 项目安全加固（数据权限校验/mgsSecCheck/频控收紧/AI调用路径统一）
 - [x] Git初始提交 + GitHub仓库创建
 - [ ] **待GUI操作**：微信开发者工具导入 + 注册小程序 + 开通云开发 + 部署云函数
 - **状态：** complete（代码部分）
 
-### 阶段 2.1：GUI配置（需手动操作）
+### 阶段 2.2：UI改版
+- [x] 星云夜幕设计系统（暗色玻璃拟态）
+- [x] 6个SVG TabBar图标（灰常态/金选中）
+- [x] 命名：AI祝福工厂 → 心祝
+- **状态：** complete
+
+### 阶段 2.3：代码审查修复
+- [x] 🔴 数据权限：history.js/preview.js改云函数 + userId校验 + 新增getBlessing
+- [x] 🔴 msgSecCheck：generateBlessing逐版审核
+- [x] 🔴 频控收紧：30s内>2次→1次
+- [x] 🔴 AI调用统一：去除前端混元封装，统一cloud.openapi
+- [x] 🟡 海报保存：preview.js绑定poster-canvas实际保存
+- [x] 🟡 WXSS伪元素改真实view（glow-top/glow-bottom）
+- [x] 🟡 wx-server-sdk固定~3.0.0
+- [x] 🟢 uploadWithSourceMap: false
+- [x] 🟢 project.private.config.json移出Git
+- **状态：** complete
+
+### 阶段 2.4：GUI配置（需手动操作）
 - [ ] 注册新小程序（AppID）- mp.weixin.qq.com
-- [ ] 小程序命名（建议3备选：祝福工厂/AI祝福管家/传情祝福，先查商标）
+- [ ] 小程序命名（心祝，已选定）
 - [ ] 微信开发者工具导入项目
 - [ ] 开通云开发环境 + 创建blessings/share_events集合
-- [ ] 部署4个云函数
+- [ ] 部署5个云函数（generateBlessing/listHistory/getBlessing/trackShare/getStats）
 - [ ] 修改app.js中的云环境ID
 - [ ] 真机预览测试
 - **状态：** pending
