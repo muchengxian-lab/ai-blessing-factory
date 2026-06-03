@@ -13,7 +13,15 @@
 ---
 
 ## 当前阶段
-阶段 2：MVP开发（代码完成，待GUI配置）
+阶段 2：MVP开发（代码+UI完成，待GUI配置）
+
+## UI设计系统
+- **风格：** 星云夜幕（暗色玻璃拟态）
+- **底色：** 深靛蓝渐变 #1A1025→#162447
+- **主色：** 流光金 #F0C060 + 柔珊瑚 #FF7B7B
+- **卡片：** 半透明磨砂玻璃 (backdrop-filter blur)
+- **图标：** 6个SVG细线图标（灰常态/金选中）
+- **TabBar：** 暗色毛玻璃 + 金色选中态
 
 ## 项目链接
 - **GitHub:** https://github.com/muchengxian-lab/ai-blessing-factory

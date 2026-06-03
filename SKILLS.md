@@ -168,7 +168,7 @@
 
 ---
 
-## 五、项目文件索引（79个文件）
+## 五、项目文件索引（86个文件）
 
 ### 产品文档
 | 文件 | 角色 | 状态 |
@@ -184,7 +184,7 @@
 | README.md | 项目说明 | ✅ |
 | .gitignore | Git忽略配置 | ✅ |
 
-### 代码（miniprogram/69文件）
+### 代码（miniprogram/76文件）
 | 目录 | 文件数 | 说明 |
 |------|:--:|------|
 | 根配置 | 5 | app.js/json/wxss + project.config.json + sitemap.json |
