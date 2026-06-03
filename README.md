@@ -28,7 +28,7 @@
 | [task_plan.md](task_plan.md) | 任务计划+阶段跟踪 |
 | [findings.md](findings.md) | 调研数据+竞品分析 |
 | [progress.md](progress.md) | 进度日志 |
-| `miniprogram/` | 78个代码文件（4页+7组件+4云函数+7工具库） |
+| `miniprogram/` | 78个代码文件（4页+7组件+5云函数+7工具库+6 SVG图标） |
 
 ## 首个节点
 父亲节 2026年6月21日（倒计时18天）
