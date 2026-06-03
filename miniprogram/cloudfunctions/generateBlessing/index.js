@@ -7,13 +7,12 @@ exports.main = async (event) => {
   const wxContext = cloud.getWXContext();
   const userId = wxContext.OPENID;
 
-  // Rate limit
-  const recentKey = `gen_${userId}`;
+  // Rate limit: 1 per user per 30s
   const { total: recentCount } = await db.collection('blessings')
     .where({ userId, createdAt: db.command.gte(new Date(Date.now() - 30000)) })
     .count();
-  if (recentCount > 2) {
-    return { code: 'TOO_FREQUENT', message: '请稍后再试' };
+  if (recentCount > 0) {
+    return { code: 'TOO_FREQUENT', message: '请30秒后再试' };
   }
 
   try {
@@ -35,10 +34,26 @@ exports.main = async (event) => {
       });
 
       const text = (result.choices && result.choices[0] && result.choices[0].message.content) || '';
-      if (text) blessings.push(text.trim());
+      // Content security check
+      if (text) {
+        try {
+          const secRes = await cloud.openapi.security.msgSecCheck({
+            content: text,
+            version: 2,
+            openid: userId,
+            scene: 2,
+          });
+          if (secRes.result && secRes.result.suggest === 'pass') {
+            blessings.push(text.trim());
+          }
+        } catch (secErr) {
+          // If security check fails, skip this version
+          console.warn('msgSecCheck failed:', secErr);
+        }
+      }
     }
 
-    // Fallback
+    // Fallback if all versions failed
     if (blessings.length === 0) {
       const fallback = getFallback(holiday, target);
       blessings.push(fallback, fallback, fallback);

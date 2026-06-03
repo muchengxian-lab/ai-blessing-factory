@@ -40,26 +40,22 @@ page {
   background: linear-gradient(170deg, #1A1025 0%, #1E1A32 30%, #1F1B3A 60%, #162447 100%);
 }
 
-/* ===== 装饰光斑 ===== */
-.page-bg::before {
-  content: '';
+/* ===== 装饰光斑（真实view） ===== */
+.glow-top {
   position: absolute;
-  top: -120rpx;
-  right: -80rpx;
-  width: 400rpx;
-  height: 400rpx;
+  top: -120rpx; right: -80rpx;
+  width: 400rpx; height: 400rpx;
   background: radial-gradient(circle, rgba(240,192,96,0.12) 0%, transparent 70%);
   border-radius: 50%;
+  pointer-events: none;
 }
-.page-bg::after {
-  content: '';
+.glow-bottom {
   position: absolute;
-  bottom: 100rpx;
-  left: -100rpx;
-  width: 350rpx;
-  height: 350rpx;
+  bottom: 100rpx; left: -100rpx;
+  width: 350rpx; height: 350rpx;
   background: radial-gradient(circle, rgba(255,123,123,0.08) 0%, transparent 70%);
   border-radius: 50%;
+  pointer-events: none;
 }
 
 /* ===== 通用按钮 ===== */

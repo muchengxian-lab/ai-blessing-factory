@@ -1,32 +1,23 @@
 const { TOAST_COPIED, TOAST_SAVED } = require('../../utils/copywriting.js');
-const { callGenerate } = require('../../utils/api.js');
+const { callGenerate, callGetBlessing } = require('../../utils/api.js');
 
 Page({
   data: {
-    blessingId: '',
-    holiday: '',
-    holidayEmoji: '✨',
-    target: '',
-    styleId: 'warm',
-    blessings: [],
-    currentIndex: 0,
-    currentText: '',
-    loading: true,
-    regenerating: false,
+    blessingId: '', holiday: '', holidayEmoji: '✨',
+    target: '', styleId: 'warm', blessings: [],
+    currentIndex: 0, currentText: '', loading: true, regenerating: false,
   },
 
   onLoad(options) {
-    const { blessingId } = options;
-    this.setData({ blessingId, loading: true });
-    this.loadBlessing(blessingId);
+    this.setData({ blessingId: options.blessingId, loading: true });
+    this.loadBlessing(options.blessingId);
   },
 
   loadBlessing(blessingId) {
-    const db = wx.cloud.database();
-    db.collection('blessings').doc(blessingId).get()
+    callGetBlessing(blessingId)
       .then(res => {
-        const data = res.data;
-        if (data) {
+        const data = res.result;
+        if (data && data.code === 'OK') {
           this.setData({
             blessings: data.content || [data.content],
             holiday: data.holiday || '',
@@ -39,7 +30,7 @@ Page({
           });
         } else {
           this.setData({ loading: false });
-          wx.showToast({ title: '祝福不存在', icon: 'none' });
+          wx.showToast({ title: '祝福不存在或无权访问', icon: 'none' });
         }
       })
       .catch(() => {
@@ -70,8 +61,7 @@ Page({
 
   onRegenerate() {
     this.setData({ regenerating: true });
-    const { holiday, target, styleId } = this.data;
-    callGenerate(holiday, target, styleId)
+    callGenerate(this.data.holiday, this.data.target, this.data.styleId)
       .then(res => {
         this.setData({ regenerating: false });
         if (res.result && res.result.code === 'OK') {
@@ -85,19 +75,19 @@ Page({
   },
 
   onSavePoster() {
-    wx.showToast({ title: TOAST_SAVED, icon: 'none' });
+    const poster = this.selectComponent('#posterCanvas');
+    if (poster) {
+      poster.onSave();
+    } else {
+      wx.showToast({ title: '海报组件未就绪', icon: 'none' });
+    }
   },
 
-  onSharePoster() {
-    wx.showShareMenu({ withShareTicket: true });
-  },
-
+  onSharePoster() {},
   onShareAppMessage() {
-    const { holiday, currentText } = this.data;
     return {
-      title: `我用AI生成了${holiday}祝福，分享给你 ✨`,
-      path: `/pages/index/index`,
-      imageUrl: '',
+      title: `我用心祝生成了${this.data.holiday}祝福，分享给你 ✨`,
+      path: '/pages/index/index',
     };
   },
 });

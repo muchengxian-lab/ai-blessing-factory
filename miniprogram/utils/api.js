@@ -7,6 +7,13 @@ function callGenerate(holiday, target, style) {
   });
 }
 
+function callGetBlessing(blessingId) {
+  return wx.cloud.callFunction({
+    name: 'getBlessing',
+    data: { blessingId },
+  });
+}
+
 function callListHistory(page = 1, pageSize = 20) {
   return wx.cloud.callFunction({
     name: 'listHistory',
@@ -21,28 +28,6 @@ function callTrackShare(blessingId, channel) {
   });
 }
 
-function generateWithAI(holiday, target, style) {
-  return new Promise((resolve, reject) => {
-    const model = wx.cloud.extend.AI.createModel('hunyuan-turbo');
-    const { buildSystemPrompt } = require('./prompt.js');
-    const systemPrompt = buildSystemPrompt(holiday, target, style);
-
-    model.chat({
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: `请为"${holiday}"节日生成一条真诚的祝福文案，发给"${target}"，风格"${style}"。` }
-      ],
-      temperature: CONFIG.TEMPERATURE_BASE,
-      maxTokens: 600,
-    }).then(res => {
-      resolve(res);
-    }).catch(err => {
-      reject(err);
-    });
-  });
-}
-
 module.exports = {
-  callGenerate, callListHistory, callTrackShare,
-  generateWithAI,
+  callGenerate, callGetBlessing, callListHistory, callTrackShare,
 };

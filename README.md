@@ -31,7 +31,7 @@
 | `miniprogram/` | 69个代码文件（4页+7组件+4云函数+7工具库） |
 
 ## 首个节点
-父亲节 2026年6月21日（倒计时19天）
+父亲节 2026年6月21日（倒计时18天）
 
 ## 仓库
 https://github.com/muchengxian-lab/ai-blessing-factory

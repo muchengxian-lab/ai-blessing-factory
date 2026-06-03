@@ -1,4 +1,7 @@
-<view class="page-bg"></view>
+<view class="page-bg">
+  <view class="glow-top"></view>
+  <view class="glow-bottom"></view>
+</view>
 <view class="page-container">
   <!-- Header -->
   <view class="header">

@@ -1,18 +1,15 @@
+const { callListHistory } = require('../../utils/api.js');
+
 Page({
   data: { list: [], loading: true },
 
-  onShow() {
-    this.loadHistory();
-  },
+  onShow() { this.loadHistory(); },
 
   loadHistory() {
-    const db = wx.cloud.database();
-    db.collection('blessings')
-      .orderBy('createdAt', 'desc')
-      .limit(50)
-      .get()
+    callListHistory(1, 50)
       .then(res => {
-        const list = (res.data || []).map(item => ({
+        const data = res.result;
+        const list = (data.list || []).map(item => ({
           ...item,
           preview: Array.isArray(item.content)
             ? item.content[0].slice(0, 50) + '...'
@@ -22,6 +19,7 @@ Page({
         this.setData({ list, loading: false });
       })
       .catch(() => {
+        wx.showToast({ title: '加载失败', icon: 'none' });
         this.setData({ loading: false });
       });
   },
@@ -41,7 +39,5 @@ Page({
     wx.navigateTo({ url: `/pages/preview/preview?blessingId=${id}` });
   },
 
-  goHome() {
-    wx.switchTab({ url: '/pages/index/index' });
-  },
+  goHome() { wx.switchTab({ url: '/pages/index/index' }); },
 });
