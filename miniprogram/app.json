@@ -7,9 +7,9 @@
   ],
   "window": {
     "navigationBarTitleText": "AI祝福工厂",
-    "navigationBarBackgroundColor": "#FFF8F0",
-    "navigationBarTextStyle": "black",
-    "backgroundColor": "#FFF8F0"
+    "navigationBarBackgroundColor": "#1A1025",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#1A1025"
   },
   "tabBar": {
     "custom": true,
