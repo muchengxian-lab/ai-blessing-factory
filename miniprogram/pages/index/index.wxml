@@ -3,7 +3,7 @@
   <!-- Header -->
   <view class="header">
     <view class="header-star">✦</view>
-    <view class="header-title">AI祝福工厂</view>
+    <view class="header-title">心祝</view>
     <view class="header-sub">星光照亮每一份心意</view>
     <view class="countdown" wx:if="{{upcomingHoliday}}">
       距 <text class="countdown-holiday">{{upcomingHoliday.name}}</text> 还有

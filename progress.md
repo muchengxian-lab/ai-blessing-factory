@@ -33,7 +33,7 @@
 - 代码统计：
   - `miniprogram/` 目录：69个文件
   - 项目总计（含文档）：79个文件
-  - Git提交：`081da6b` feat: AI祝福工厂 MVP v1.0
+  - Git提交：`081da6b` feat: 心祝 MVP v1.0
 - GitHub: https://github.com/muchengxian-lab/ai-blessing-factory
 
 ### 阶段 2.2：UI改版 — 星云夜幕

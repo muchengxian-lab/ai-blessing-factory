@@ -10,7 +10,7 @@
 
     <view class="menu-item card" bindtap="onAbout">
       <text class="menu-icon">ℹ️</text>
-      <text class="menu-label">关于AI祝福工厂</text>
+      <text class="menu-label">关于心祝</text>
       <text class="menu-arrow">›</text>
     </view>
 
@@ -28,7 +28,7 @@
   </view>
 
   <view class="footer">
-    <text>AI祝福工厂 v1.0</text>
+    <text>心祝 v1.0</text>
     <text class="footer-sub">AI生成，仅供参考 · 祝福由心</text>
   </view>
 

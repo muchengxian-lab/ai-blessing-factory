@@ -42,7 +42,7 @@ function composePoster(ctx, options) {
   // Watermark
   ctx.setFillStyle('rgba(150,150,150,0.5)');
   ctx.setFontSize(28);
-  ctx.fillText('AI生成 · AI祝福工厂', W / 2, H - 80);
+  ctx.fillText('AI生成 · 心祝', W / 2, H - 80);
 }
 
 function splitText(ctx, text, maxWidth) {
