@@ -1,24 +1,31 @@
 .page-title {
   font-size: 40rpx;
   font-weight: 700;
-  margin-bottom: 24rpx;
+  margin-bottom: 28rpx;
+  color: var(--rose);
 }
 .history-list { padding-bottom: 40rpx; }
-.history-item { margin-bottom: 16rpx; }
+.history-item {
+  margin-bottom: 16rpx;
+  border-left: 4rpx solid transparent;
+  transition: border-color 0.2s;
+}
+.history-item:active { border-left-color: var(--rose); }
 .item-header {
   display: flex;
   align-items: center;
-  margin-bottom: 12rpx;
+  margin-bottom: 14rpx;
 }
-.item-emoji { font-size: 40rpx; margin-right: 12rpx; }
+.item-emoji { font-size: 40rpx; margin-right: 14rpx; }
 .item-info { flex: 1; }
-.item-holiday { font-size: 28rpx; font-weight: 600; display: block; }
-.item-time { font-size: 24rpx; color: var(--text-light); }
+.item-holiday { font-size: 28rpx; font-weight: 600; color: var(--text); display: block; }
+.item-time { font-size: 24rpx; color: var(--text-light); margin-top: 4rpx; }
 .item-arrow { font-size: 32rpx; color: var(--text-light); }
 .item-preview {
   font-size: 26rpx;
-  color: var(--text-light);
+  color: var(--text-mid);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  padding-left: 54rpx;
 }

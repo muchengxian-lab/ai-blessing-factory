@@ -1,7 +1,8 @@
 .page-title {
   font-size: 40rpx;
   font-weight: 700;
-  margin-bottom: 32rpx;
+  margin-bottom: 36rpx;
+  color: var(--rose);
 }
 .menu-list { margin-bottom: 48rpx; }
 .menu-item {
@@ -10,17 +11,19 @@
   margin-bottom: 12rpx;
   padding: 28rpx 32rpx;
   font-size: 28rpx;
+  border: 1rpx solid var(--border-light);
 }
 .share-item {
-  border: none;
+  border: 1rpx solid var(--border-light);
   text-align: left;
   width: 100%;
   box-sizing: border-box;
+  background: var(--bg-card);
 }
 .share-item::after { border: none; }
-.menu-icon { font-size: 36rpx; margin-right: 16rpx; }
+.menu-icon { font-size: 36rpx; margin-right: 18rpx; }
 .menu-label { flex: 1; font-weight: 500; }
-.menu-value { font-size: 26rpx; color: var(--primary); }
+.menu-value { font-size: 26rpx; color: var(--rose); }
 .menu-arrow { font-size: 32rpx; color: var(--text-light); }
 
 .footer {
@@ -28,5 +31,6 @@
   padding: 60rpx 0;
   font-size: 24rpx;
   color: var(--text-light);
+  line-height: 1.8;
 }
-.footer-sub { display: block; margin-top: 8rpx; }
+.footer-sub { display: block; }

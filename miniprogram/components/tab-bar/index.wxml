@@ -1,26 +1,14 @@
 <view class="tab-bar">
-  <view
-    class="tab-item {{current === 0 ? 'active' : ''}}"
-    bindtap="onTap"
-    data-index="0"
-  >
-    <text class="tab-icon">🏠</text>
+  <view class="tab-item {{current === 0 ? 'active' : ''}}" bindtap="onTap" data-index="0">
+    <image class="tab-icon" src="{{current === 0 ? '/images/tab-home-active.svg' : '/images/tab-home.svg'}}"></image>
     <text class="tab-text">首页</text>
   </view>
-  <view
-    class="tab-item {{current === 1 ? 'active' : ''}}"
-    bindtap="onTap"
-    data-index="1"
-  >
-    <text class="tab-icon">📋</text>
+  <view class="tab-item {{current === 1 ? 'active' : ''}}" bindtap="onTap" data-index="1">
+    <image class="tab-icon" src="{{current === 1 ? '/images/tab-history-active.svg' : '/images/tab-history.svg'}}"></image>
     <text class="tab-text">历史</text>
   </view>
-  <view
-    class="tab-item {{current === 2 ? 'active' : ''}}"
-    bindtap="onTap"
-    data-index="2"
-  >
-    <text class="tab-icon">👤</text>
+  <view class="tab-item {{current === 2 ? 'active' : ''}}" bindtap="onTap" data-index="2">
+    <image class="tab-icon" src="{{current === 2 ? '/images/tab-mine-active.svg' : '/images/tab-mine.svg'}}"></image>
     <text class="tab-text">我的</text>
   </view>
 </view>

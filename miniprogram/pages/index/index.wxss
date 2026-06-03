@@ -1,54 +1,58 @@
 .header {
   text-align: center;
-  padding: 40rpx 0 20rpx;
+  padding: 48rpx 0 16rpx;
 }
 .header-title {
-  font-size: 44rpx;
+  font-size: 48rpx;
   font-weight: 700;
-  color: var(--primary);
+  color: var(--rose);
+  letter-spacing: 4rpx;
   margin-bottom: 8rpx;
 }
 .header-sub {
   font-size: 26rpx;
   color: var(--text-light);
-  margin-bottom: 12rpx;
+  margin-bottom: 16rpx;
 }
 .countdown {
-  display: inline-block;
-  padding: 8rpx 24rpx;
-  background: var(--primary);
-  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  padding: 10rpx 28rpx;
+  background: linear-gradient(135deg, var(--rose-soft), var(--gold-soft));
   border-radius: 32rpx;
   font-size: 24rpx;
+  color: var(--rose);
 }
 .countdown-num {
-  font-size: 32rpx;
+  font-size: 34rpx;
   font-weight: 700;
+  margin: 0 6rpx;
+  color: var(--gold);
 }
 
 .section {
-  margin-top: 32rpx;
-}
-.section-title {
-  font-size: 30rpx;
-  font-weight: 600;
-  margin-bottom: 16rpx;
-  padding-left: 4rpx;
+  margin-top: 36rpx;
 }
 
 .generate-area {
-  margin-top: 48rpx;
-  padding-bottom: 40rpx;
+  margin-top: 56rpx;
+  padding-bottom: 48rpx;
 }
 .generate-btn {
   width: 100%;
-  height: 104rpx;
+  height: 108rpx;
   font-size: 36rpx;
-  border-radius: 52rpx;
-  box-shadow: 0 8rpx 24rpx rgba(255,107,53,0.3);
+  letter-spacing: 4rpx;
+  border-radius: 54rpx;
 }
-.generate-btn.disabled {
-  background: #E0E0E0;
-  box-shadow: none;
-  color: #B0B0B0;
+
+/* ===== 装饰元素 ===== */
+.header::after {
+  content: '';
+  display: block;
+  width: 60rpx;
+  height: 4rpx;
+  background: linear-gradient(90deg, var(--rose), var(--gold));
+  border-radius: 2rpx;
+  margin: 20rpx auto 0;
 }
