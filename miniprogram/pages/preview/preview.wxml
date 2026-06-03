@@ -38,13 +38,15 @@
     <view class="section">
       <view class="section-title">🎨 祝福海报</view>
       <poster-canvas
+        id="posterCanvas"
         text="{{currentText}}"
         emoji="{{holidayEmoji}}"
+        holiday="{{holiday}}"
         styleId="{{styleId}}"
-        bind:save="onSavePoster"
+        bind:save="onPosterSaved"
       />
       <view class="poster-actions">
-        <button class="btn-primary share-btn" bindtap="onSharePoster">
+        <button class="btn-primary share-btn" open-type="share">
           📤 分享给好友
         </button>
         <button class="btn-secondary save-btn" bindtap="onSavePoster">
