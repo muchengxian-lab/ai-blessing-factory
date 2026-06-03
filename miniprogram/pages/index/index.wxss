@@ -1,58 +1,57 @@
 .header {
   text-align: center;
-  padding: 48rpx 0 16rpx;
+  padding: 56rpx 0 24rpx;
+}
+.header-star {
+  font-size: 36rpx;
+  color: var(--gold);
+  margin-bottom: 12rpx;
+  animation: twinkle 3s ease-in-out infinite;
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.4; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.1); }
 }
 .header-title {
-  font-size: 48rpx;
-  font-weight: 700;
-  color: var(--rose);
-  letter-spacing: 4rpx;
+  font-size: 52rpx;
+  font-weight: 800;
+  background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold) 60%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 6rpx;
   margin-bottom: 8rpx;
 }
 .header-sub {
   font-size: 26rpx;
   color: var(--text-light);
-  margin-bottom: 16rpx;
+  margin-bottom: 20rpx;
 }
 .countdown {
   display: inline-flex;
   align-items: center;
   padding: 10rpx 28rpx;
-  background: linear-gradient(135deg, var(--rose-soft), var(--gold-soft));
+  background: rgba(240,192,96,0.12);
+  border: 1rpx solid rgba(240,192,96,0.25);
   border-radius: 32rpx;
   font-size: 24rpx;
-  color: var(--rose);
+  color: var(--text-light);
 }
+.countdown-holiday { color: var(--gold); }
 .countdown-num {
   font-size: 34rpx;
   font-weight: 700;
-  margin: 0 6rpx;
   color: var(--gold);
+  margin: 0 6rpx;
 }
 
-.section {
-  margin-top: 36rpx;
-}
+.section { margin-top: 36rpx; }
 
-.generate-area {
-  margin-top: 56rpx;
-  padding-bottom: 48rpx;
-}
+.generate-area { margin-top: 56rpx; padding-bottom: 48rpx; }
 .generate-btn {
   width: 100%;
   height: 108rpx;
   font-size: 36rpx;
   letter-spacing: 4rpx;
   border-radius: 54rpx;
-}
-
-/* ===== 装饰元素 ===== */
-.header::after {
-  content: '';
-  display: block;
-  width: 60rpx;
-  height: 4rpx;
-  background: linear-gradient(90deg, var(--rose), var(--gold));
-  border-radius: 2rpx;
-  margin: 20rpx auto 0;
 }

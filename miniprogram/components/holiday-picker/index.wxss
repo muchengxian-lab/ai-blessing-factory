@@ -1,23 +1,18 @@
 .picker-scroll { white-space: nowrap; }
 .picker-row { display: flex; padding: 8rpx 0; }
 .picker-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 144rpx;
-  min-width: 144rpx;
-  height: 128rpx;
-  margin-right: 16rpx;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  width: 144rpx; min-width: 144rpx; height: 128rpx; margin-right: 16rpx;
   border-radius: var(--radius);
   background: var(--bg-card);
-  border: 2rpx solid var(--border);
-  transition: all 0.2s;
+  border: 1rpx solid var(--glass-border);
+  transition: all 0.25s;
 }
 .picker-emoji { font-size: 40rpx; margin-bottom: 6rpx; }
 .picker-name { font-size: 24rpx; color: var(--text-light); font-weight: 500; }
 .picker-active {
-  border-color: var(--rose);
-  background: var(--rose-soft);
+  border-color: var(--gold);
+  background: rgba(240,192,96,0.12);
+  box-shadow: 0 0 24rpx rgba(240,192,96,0.15);
 }
-.picker-active .picker-name { color: var(--rose); font-weight: 600; }
+.picker-active .picker-name { color: var(--gold); font-weight: 600; }

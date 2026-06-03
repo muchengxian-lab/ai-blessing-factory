@@ -1,55 +1,40 @@
-<view class="page-container theme-{{activeTheme}}">
+<view class="page-bg"></view>
+<view class="page-container">
   <!-- Header -->
   <view class="header">
+    <view class="header-star">✦</view>
     <view class="header-title">AI祝福工厂</view>
-    <view class="header-sub">30秒生成专属祝福 ✨</view>
+    <view class="header-sub">星光照亮每一份心意</view>
     <view class="countdown" wx:if="{{upcomingHoliday}}">
-      距{{upcomingHoliday.name}}还有 <text class="countdown-num">{{upcomingHoliday.daysLeft}}</text> 天
+      距 <text class="countdown-holiday">{{upcomingHoliday.name}}</text> 还有
+      <text class="countdown-num">{{upcomingHoliday.daysLeft}}</text> 天
     </view>
   </view>
 
   <!-- Holiday Picker -->
   <view class="section">
     <view class="section-title">🎯 选择节日</view>
-    <holiday-picker
-      holidays="{{holidays}}"
-      active="{{selectedHoliday}}"
-      bind:select="onHolidaySelect"
-    />
+    <holiday-picker holidays="{{holidays}}" active="{{selectedHoliday}}" bind:select="onHolidaySelect" />
   </view>
 
   <!-- Target Picker -->
   <view class="section">
     <view class="section-title">👤 发给谁？</view>
-    <target-picker
-      targets="{{targets}}"
-      active="{{selectedTarget}}"
-      bind:select="onTargetSelect"
-    />
+    <target-picker targets="{{targets}}" active="{{selectedTarget}}" bind:select="onTargetSelect" />
   </view>
 
   <!-- Style Picker -->
   <view class="section">
     <view class="section-title">🎨 想要什么风格？</view>
-    <style-picker
-      styles="{{styles}}"
-      active="{{selectedStyle}}"
-      bind:select="onStyleSelect"
-    />
+    <style-picker styles="{{styles}}" active="{{selectedStyle}}" bind:select="onStyleSelect" />
   </view>
 
-  <!-- Generate Button -->
+  <!-- Generate -->
   <view class="generate-area">
-    <button
-      class="btn-primary generate-btn {{canGenerate ? '' : 'disabled'}}"
-      disabled="{{!canGenerate}}"
-      bindtap="onGenerate"
-      loading="{{generating}}"
-    >
+    <button class="btn-primary generate-btn" disabled="{{!canGenerate}}" bindtap="onGenerate" loading="{{generating}}">
       {{generating ? loadingText : '✨ 生成祝福'}}
     </button>
   </view>
 
-  <!-- Tab Bar -->
   <tab-bar current="{{0}}" />
 </view>

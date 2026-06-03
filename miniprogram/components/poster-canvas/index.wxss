@@ -1,8 +1,6 @@
 .poster-wrap {
-  width: 100%;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-lg);
-  border: 2rpx solid var(--gold-soft);
+  width: 100%; border-radius: var(--radius-lg); overflow: hidden;
+  box-shadow: 0 8rpx 40rpx rgba(0,0,0,0.4);
+  border: 2rpx solid rgba(240,192,96,0.2);
 }
 .poster-canvas { width: 100%; display: block; }

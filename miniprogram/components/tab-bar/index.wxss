@@ -7,9 +7,10 @@
   align-items: center;
   justify-content: space-around;
   height: 100rpx;
-  background: rgba(255,255,255,0.92);
-  backdrop-filter: blur(20rpx);
-  border-top: 1rpx solid var(--border-light);
+  background: rgba(26,16,37,0.88);
+  backdrop-filter: blur(24rpx);
+  -webkit-backdrop-filter: blur(24rpx);
+  border-top: 1rpx solid rgba(255,255,255,0.06);
   padding-bottom: env(safe-area-inset-bottom);
   z-index: 100;
 }
@@ -20,17 +21,6 @@
   justify-content: center;
   padding: 8rpx 32rpx;
 }
-.tab-icon {
-  width: 44rpx;
-  height: 44rpx;
-  margin-bottom: 2rpx;
-}
-.tab-text {
-  font-size: 20rpx;
-  color: var(--text-light);
-  font-weight: 400;
-}
-.tab-item.active .tab-text {
-  color: var(--rose);
-  font-weight: 600;
-}
+.tab-icon { width: 44rpx; height: 44rpx; margin-bottom: 2rpx; }
+.tab-text { font-size: 20rpx; color: var(--text-light); font-weight: 400; }
+.tab-item.active .tab-text { color: var(--gold); font-weight: 600; }

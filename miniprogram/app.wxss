@@ -1,55 +1,89 @@
-/* ===== AI祝福工厂 — 精装贺卡风 ===== */
+/* ===== AI祝福工厂 — 星云夜幕 ===== */
 page {
-  --rose: #CD5C5C;
-  --rose-light: #E08080;
-  --rose-soft: #FDF0F0;
-  --gold: #C8963E;
-  --gold-light: #E0C878;
-  --gold-soft: #FDF8EE;
-  --bg: #FFFBF8;
-  --bg-card: #FFFFFF;
-  --text: #3D2C2A;
-  --text-light: #A89B95;
-  --text-mid: #7A6A65;
-  --border: #F0E8E2;
-  --border-light: #F8F2EC;
-  --shadow-sm: 0 1rpx 6rpx rgba(61,44,42,0.04);
-  --shadow: 0 4rpx 16rpx rgba(61,44,42,0.06);
-  --shadow-lg: 0 8rpx 32rpx rgba(61,44,42,0.08);
+  --bg-deep: #1A1025;
+  --bg-mid: #1E1A32;
+  --bg-surface: #25203A;
+  --bg-card: rgba(255,255,255,0.07);
+  --bg-card-hover: rgba(255,255,255,0.12);
+  --glass-border: rgba(255,255,255,0.10);
+  --glass-border-active: rgba(240,192,96,0.45);
+
+  --gold: #F0C060;
+  --gold-light: #F5D68A;
+  --coral: #FF7B7B;
+  --coral-light: #FF9E9E;
+
+  --text: #EDE4D8;
+  --text-light: #9B9388;
+  --text-mid: #736B60;
+
   --radius-sm: 10rpx;
   --radius: 16rpx;
   --radius-lg: 24rpx;
   --radius-xl: 32rpx;
 
+  --shadow-card: 0 2rpx 16rpx rgba(0,0,0,0.3);
+  --shadow-btn: 0 8rpx 32rpx rgba(240,192,96,0.25);
+
   font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif;
   color: var(--text);
-  background: var(--bg);
+  background: var(--bg-deep);
   font-size: 28rpx;
   line-height: 1.7;
 }
 
-/* ===== 通用组件 ===== */
+/* ===== 页面渐变背景 ===== */
+.page-bg {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: -1;
+  background: linear-gradient(170deg, #1A1025 0%, #1E1A32 30%, #1F1B3A 60%, #162447 100%);
+}
+
+/* ===== 装饰光斑 ===== */
+.page-bg::before {
+  content: '';
+  position: absolute;
+  top: -120rpx;
+  right: -80rpx;
+  width: 400rpx;
+  height: 400rpx;
+  background: radial-gradient(circle, rgba(240,192,96,0.12) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.page-bg::after {
+  content: '';
+  position: absolute;
+  bottom: 100rpx;
+  left: -100rpx;
+  width: 350rpx;
+  height: 350rpx;
+  background: radial-gradient(circle, rgba(255,123,123,0.08) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+/* ===== 通用按钮 ===== */
 .btn-primary {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 96rpx;
   border-radius: var(--radius-xl);
-  background: linear-gradient(135deg, var(--rose), var(--rose-light));
-  color: #fff;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--coral) 100%);
+  color: #1A1025;
   font-size: 32rpx;
-  font-weight: 600;
+  font-weight: 700;
   border: none;
   letter-spacing: 2rpx;
-  box-shadow: 0 6rpx 24rpx rgba(205,92,92,0.25);
+  box-shadow: var(--shadow-btn);
   transition: all 0.2s;
 }
 .btn-primary[disabled] {
-  background: #E8E0DD;
-  color: #C4B8B2;
+  background: rgba(255,255,255,0.08);
+  color: rgba(237,228,216,0.25);
   box-shadow: none;
 }
-.btn-primary:active { transform: scale(0.98); }
+.btn-primary:active { transform: scale(0.97); opacity: 0.9; }
 
 .btn-secondary {
   display: flex;
@@ -58,25 +92,30 @@ page {
   height: 80rpx;
   border-radius: var(--radius);
   background: var(--bg-card);
-  border: 2rpx solid var(--rose);
-  color: var(--rose);
+  border: 1rpx solid var(--glass-border);
+  color: var(--gold);
   font-size: 28rpx;
   font-weight: 500;
   padding: 0 32rpx;
 }
 
+/* ===== 玻璃卡片 ===== */
 .card {
   background: var(--bg-card);
+  backdrop-filter: blur(20rpx);
+  -webkit-backdrop-filter: blur(20rpx);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
+  border: 1rpx solid var(--glass-border);
   padding: 32rpx;
-  border: 1rpx solid var(--border-light);
 }
 
+/* ===== 页面容器 ===== */
 .page-container {
   min-height: 100vh;
   padding: 24rpx;
   padding-bottom: 140rpx;
+  position: relative;
+  z-index: 1;
 }
 
 .section-title {
@@ -87,5 +126,4 @@ page {
   padding-left: 4rpx;
 }
 
-/* ===== 滚动条 ===== */
 ::-webkit-scrollbar { width: 0; height: 0; }
