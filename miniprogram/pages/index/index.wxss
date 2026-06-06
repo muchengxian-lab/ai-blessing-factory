@@ -13,13 +13,13 @@
   50% { opacity: 1; transform: scale(1.1); }
 }
 .header-title {
-  font-size: 52rpx;
+  font-size: 48rpx;
   font-weight: 800;
   background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold) 60%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  letter-spacing: 6rpx;
+  letter-spacing: 2rpx;
   margin-bottom: 8rpx;
 }
 .header-sub {

@@ -8,7 +8,7 @@
       bindtap="onSelect"
       data-id="{{item.id}}"
     >
-      <text class="picker-emoji">{{item.emoji}}</text>
+      <image class="picker-icon" src="{{item.icon}}"></image>
       <text class="picker-name">{{item.name}}</text>
     </view>
   </view>

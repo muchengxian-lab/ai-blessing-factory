@@ -25,18 +25,21 @@
     <!-- Actions -->
     <view class="actions">
       <button class="action-btn" bindtap="onCopy">
-        <text class="action-icon">📋</text>
+        <image class="action-icon" src="/images/icons/action-copy.svg"></image>
         <text>复制文案</text>
       </button>
       <button class="action-btn" bindtap="onRegenerate" loading="{{regenerating}}">
-        <text class="action-icon">🔄</text>
+        <image class="action-icon" src="/images/icons/action-refresh.svg"></image>
         <text>换一批</text>
       </button>
     </view>
 
     <!-- Poster Preview -->
     <view class="section">
-      <view class="section-title">🎨 祝福海报</view>
+      <view class="section-title">
+        <image class="section-title-icon" src="/images/icons/section-style.svg"></image>
+        <text>祝福海报</text>
+      </view>
       <poster-canvas
         id="posterCanvas"
         text="{{currentText}}"
@@ -47,10 +50,12 @@
       />
       <view class="poster-actions">
         <button class="btn-primary share-btn" open-type="share">
-          📤 分享给好友
+          <image class="btn-icon" src="/images/icons/action-share.svg"></image>
+          <text>分享给好友</text>
         </button>
         <button class="btn-secondary save-btn" bindtap="onSavePoster">
-          💾 保存到相册
+          <image class="btn-icon" src="/images/icons/action-save.svg"></image>
+          <text>保存到相册</text>
         </button>
       </view>
     </view>

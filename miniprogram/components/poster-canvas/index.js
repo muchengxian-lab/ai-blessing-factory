@@ -1,7 +1,9 @@
 const { composePoster } = require('../../utils/poster.js');
 
 const DISPLAY_W = 340;
-const DISPLAY_H = 604; // 340 * 1334/750
+const POSTER_W = 750;
+const POSTER_H = 1334;
+const DISPLAY_H = Math.round(DISPLAY_W * POSTER_H / POSTER_W);
 
 Component({
   properties: {
@@ -31,8 +33,8 @@ Component({
             const ctx = canvas.getContext('2d');
             const dpr = wx.getSystemInfoSync().pixelRatio || 2;
 
-            canvas.width = DISPLAY_W * dpr;
-            canvas.height = DISPLAY_H * dpr;
+            canvas.width = POSTER_W * dpr;
+            canvas.height = POSTER_H * dpr;
             ctx.scale(dpr, dpr);
 
             this.canvas = canvas;

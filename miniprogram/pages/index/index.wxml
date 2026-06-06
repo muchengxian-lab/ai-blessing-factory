@@ -6,8 +6,8 @@
   <!-- Header -->
   <view class="header">
     <view class="header-star">✦</view>
-    <view class="header-title">心祝</view>
-    <view class="header-sub">星光照亮每一份心意</view>
+    <view class="header-title">心祝祝福语</view>
+    <view class="header-sub">AI生成专属祝福语和节日海报</view>
     <view class="countdown" wx:if="{{upcomingHoliday}}">
       距 <text class="countdown-holiday">{{upcomingHoliday.name}}</text> 还有
       <text class="countdown-num">{{upcomingHoliday.daysLeft}}</text> 天
@@ -16,26 +16,35 @@
 
   <!-- Holiday Picker -->
   <view class="section">
-    <view class="section-title">🎯 选择节日</view>
+    <view class="section-title">
+      <image class="section-title-icon" src="/images/icons/section-holiday.svg"></image>
+      <text>选择节日</text>
+    </view>
     <holiday-picker holidays="{{holidays}}" active="{{selectedHoliday}}" bind:select="onHolidaySelect" />
   </view>
 
   <!-- Target Picker -->
   <view class="section">
-    <view class="section-title">👤 发给谁？</view>
+    <view class="section-title">
+      <image class="section-title-icon" src="/images/icons/section-target.svg"></image>
+      <text>发给谁？</text>
+    </view>
     <target-picker targets="{{targets}}" active="{{selectedTarget}}" bind:select="onTargetSelect" />
   </view>
 
   <!-- Style Picker -->
   <view class="section">
-    <view class="section-title">🎨 想要什么风格？</view>
+    <view class="section-title">
+      <image class="section-title-icon" src="/images/icons/section-style.svg"></image>
+      <text>想要什么风格？</text>
+    </view>
     <style-picker styles="{{styles}}" active="{{selectedStyle}}" bind:select="onStyleSelect" />
   </view>
 
   <!-- Generate -->
   <view class="generate-area">
     <button class="btn-primary generate-btn" disabled="{{!canGenerate}}" bindtap="onGenerate" loading="{{generating}}">
-      {{generating ? loadingText : '✨ 生成祝福'}}
+      {{generating ? loadingText : '生成祝福'}}
     </button>
   </view>
 

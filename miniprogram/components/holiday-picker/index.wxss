@@ -8,7 +8,7 @@
   border: 1rpx solid var(--glass-border);
   transition: all 0.25s;
 }
-.picker-emoji { font-size: 40rpx; margin-bottom: 6rpx; }
+.picker-icon { width: 42rpx; height: 42rpx; margin-bottom: 8rpx; }
 .picker-name { font-size: 24rpx; color: var(--text-light); font-weight: 500; }
 .picker-active {
   border-color: var(--gold);

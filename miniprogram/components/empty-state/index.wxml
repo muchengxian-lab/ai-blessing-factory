@@ -1,5 +1,5 @@
 <view class="empty-wrap">
-  <text class="empty-emoji">✨</text>
+  <image class="empty-icon" src="/images/icons/empty-spark.svg"></image>
   <text class="empty-text">{{text}}</text>
   <button wx:if="{{showBtn}}" class="btn-primary empty-btn" bindtap="onTap">{{btnText}}</button>
 </view>

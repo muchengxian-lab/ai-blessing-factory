@@ -84,14 +84,15 @@ Page({
     }
   },
 
-  onPosterSaved() {
+  onPosterSaved(e) {
+    this.setData({ savedPosterPath: (e.detail && e.detail.path) || '' });
     wx.showToast({ title: TOAST_SAVED, icon: 'none' });
   },
 
   onShareAppMessage() {
     const { holiday, currentText } = this.data;
     return {
-      title: `我用「心祝」生成了${holiday}祝福，分享给你 ✨`,
+      title: `我用「心祝祝福语」生成了${holiday}祝福，分享给你`,
       path: '/pages/index/index',
       imageUrl: this.data.savedPosterPath || '',
     };

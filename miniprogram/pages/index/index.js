@@ -74,7 +74,7 @@ Page({
 
   onShareAppMessage() {
     return {
-      title: '心祝 — 30秒生成专属节日祝福 ✨',
+      title: '心祝祝福语 - 30秒生成专属节日祝福',
       path: '/pages/index/index',
     };
   },

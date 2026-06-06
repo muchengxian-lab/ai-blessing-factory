@@ -29,7 +29,8 @@
   border-radius: var(--radius);
   font-size: 28rpx; color: var(--text);
 }
-.action-icon { font-size: 32rpx; margin-right: 8rpx; }
+.action-icon { width: 32rpx; height: 32rpx; margin-right: 8rpx; }
+.btn-icon { width: 34rpx; height: 34rpx; margin-right: 10rpx; }
 
 .poster-actions { display: flex; flex-direction: column; margin-top: 28rpx; }
 .poster-actions .share-btn { margin-bottom: 16rpx; }

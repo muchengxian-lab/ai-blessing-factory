@@ -1,6 +1,6 @@
-# 心祝 — Skills配置 & 强规则
+# 心祝祝福语 — Skills配置 & 强规则
 
-> 更新：2026-06-02 | 参考：周笺小记 SKILLS.md + CODE_REVIEW + 踩坑复盘
+> 更新：2026-06-04 | 参考：周笺小记 SKILLS.md + CODE_REVIEW + 踩坑复盘
 
 ---
 
@@ -15,7 +15,7 @@
 | `auth-wechat-miniprogram` | OPENID获取、wx.cloud身份 | 涉及用户登录 |
 | `frontend-design` | UI设计、海报模板 | 改UI/设计前 |
 | `code-review-excellence` | 代码审查 | 每日收尾/阶段结束时 |
-| `icon-designer` | 图标设计（TabBar SVG） | 做图标前 |
+| `icon-designer` | 图标设计（TabBar/功能/节日SVG） | 做图标前 |
 
 ### 项目管理
 
@@ -106,7 +106,7 @@
 | `flex gap` | `margin` |
 | 组件WXSS中的标签选择器（如`view{}`） | 全部用class选择器 |
 | `page::after` / `page::before` 伪元素 | 额外view元素 |
-| emoji在TabBar中 | 手绘SVG图标 |
+| emoji作为主功能图标 | 手绘SVG图标 |
 | `position: fixed` 在scroll-view中 | 移出scroll-view |
 
 ### 路由 & 导航
@@ -168,7 +168,7 @@
 
 ---
 
-## 五、项目文件索引（88个文件）
+## 五、项目文件索引（125个文件）
 
 ### 产品文档
 | 文件 | 角色 | 状态 |
@@ -184,14 +184,15 @@
 | README.md | 项目说明 | ✅ |
 | .gitignore | Git忽略配置 | ✅ |
 
-### 代码（miniprogram/78文件）
+### 代码（miniprogram/116文件）
 | 目录 | 文件数 | 说明 |
 |------|:--:|------|
 | 根配置 | 5 | app.js/json/wxss + project.config.json + sitemap.json |
 | pages/ | 16 | index / preview / history / mine（每页4文件） |
-| components/ | 28 | 7组件 × 4文件 |
+| components/ | 32 | 8组件 × 4文件 |
 | cloudfunctions/ | 11 | generateBlessing(3) + getBlessing(2) + listHistory(2) + trackShare(2) + getStats(2) |
 | utils/ | 7 | config/holidays/theme/prompt/copywriting/api/poster |
+| images/ | 41 | 35个中式线描功能/节日SVG图标 + 6个TabBar SVG图标 |
 
 ### GitHub
 - https://github.com/muchengxian-lab/ai-blessing-factory

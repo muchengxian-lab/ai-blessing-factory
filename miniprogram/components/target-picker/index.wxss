@@ -8,7 +8,7 @@
   border: 1rpx solid var(--glass-border);
   transition: all 0.25s;
 }
-.target-emoji { font-size: 36rpx; margin-bottom: 6rpx; }
+.target-icon { width: 40rpx; height: 40rpx; margin-bottom: 8rpx; }
 .target-name { font-size: 24rpx; color: var(--text-light); font-weight: 500; }
 .target-active {
   border-color: var(--gold);

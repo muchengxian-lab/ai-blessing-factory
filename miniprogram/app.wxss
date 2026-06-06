@@ -1,4 +1,4 @@
-/* ===== 心祝 — 星云夜幕 ===== */
+/* ===== 心祝祝福语 — 星云夜幕 ===== */
 page {
   --bg-deep: #1A1025;
   --bg-mid: #1E1A32;
@@ -115,11 +115,19 @@ page {
 }
 
 .section-title {
+  display: flex;
+  align-items: center;
   font-size: 30rpx;
   font-weight: 600;
   color: var(--text);
   margin-bottom: 20rpx;
   padding-left: 4rpx;
+}
+.section-title-icon {
+  width: 34rpx;
+  height: 34rpx;
+  margin-right: 10rpx;
+  flex-shrink: 0;
 }
 
 ::-webkit-scrollbar { width: 0; height: 0; }

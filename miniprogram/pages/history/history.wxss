@@ -7,7 +7,7 @@
 }
 .history-item:active { border-left-color: var(--gold); }
 .item-header { display: flex; align-items: center; margin-bottom: 14rpx; }
-.item-emoji { font-size: 40rpx; margin-right: 14rpx; }
+.item-icon { width: 42rpx; height: 42rpx; margin-right: 14rpx; }
 .item-info { flex: 1; }
 .item-holiday { font-size: 28rpx; font-weight: 600; color: var(--text); display: block; }
 .item-time { font-size: 24rpx; color: var(--text-light); margin-top: 4rpx; }

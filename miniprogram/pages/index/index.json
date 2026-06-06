@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "心祝",
+  "navigationBarTitleText": "心祝祝福语",
   "usingComponents": {
     "holiday-picker": "/components/holiday-picker/index",
     "target-picker": "/components/target-picker/index",

@@ -1,4 +1,5 @@
 const { callListHistory } = require('../../utils/api.js');
+const { getHolidayIconByName } = require('../../utils/holidays.js');
 
 Page({
   data: { list: [], loading: true },
@@ -15,6 +16,7 @@ Page({
             ? item.content[0].slice(0, 50) + '...'
             : (item.content || '').slice(0, 50) + '...',
           timeText: this.formatTime(item.createdAt),
+          holidayIcon: getHolidayIconByName(item.holiday),
         }));
         this.setData({ list, loading: false });
       })

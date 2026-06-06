@@ -18,7 +18,7 @@
       data-id="{{item._id}}"
     >
       <view class="item-header">
-        <text class="item-emoji">{{item.holidayEmoji || '✨'}}</text>
+        <image class="item-icon" src="{{item.holidayIcon}}"></image>
         <view class="item-info">
           <text class="item-holiday">{{item.holiday}} · {{item.target}}</text>
           <text class="item-time">{{item.timeText}}</text>

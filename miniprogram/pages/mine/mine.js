@@ -20,8 +20,8 @@ Page({
 
   onAbout() {
     wx.showModal({
-      title: '关于心祝',
-      content: '一个帮你用AI生成专属节日祝福的小程序。\n\n技术栈：微信云开发 + 腾讯混元大模型\n\n祝福由心，AI只是工具。',
+      title: '关于心祝祝福语',
+      content: '一个帮你用AI生成专属节日祝福语和海报的小程序。\n\n技术栈：微信云开发 + 腾讯混元大模型\n\n祝福由心，AI只是工具。',
       showCancel: false,
       confirmText: '知道了',
     });
@@ -38,7 +38,7 @@ Page({
 
   onShareAppMessage() {
     return {
-      title: '心祝 — 30秒生成专属节日祝福 ✨',
+      title: '心祝祝福语 - 30秒生成专属节日祝福',
       path: '/pages/index/index',
     };
   },
