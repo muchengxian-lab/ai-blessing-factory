@@ -2,7 +2,7 @@ const AI = require('./utils/api.js');
 
 App({
   onLaunch() {
-    wx.cloud.init({ env: 'cloud1-7g7h5h7h5h7h5h7' });
+    wx.cloud.init({ env: 'xinzhu-d7gtsc4pz7a9fa09b' });
     this.loadPrefs();
   },
 

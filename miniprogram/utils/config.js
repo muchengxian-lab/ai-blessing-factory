@@ -1,5 +1,5 @@
 module.exports = {
-  CLOUD_ENV: 'cloud1-7g7h5h7h5h7h5h7',
+  CLOUD_ENV: 'xinzhu-d7gtsc4pz7a9fa09b',
   MAX_FREE_PER_DAY: 10,
   RATE_LIMIT_SECONDS: 30,
   BLESSING_MIN_LENGTH: 50,

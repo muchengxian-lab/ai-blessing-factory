@@ -1,10 +1,10 @@
 {
-  "appid": "wx0ad82a56a385ed18",
+  "appid": "wxbd821527de589cb9",
   "projectname": "ai-blessing-factory",
   "miniprogramRoot": "./",
   "cloudfunctionRoot": "cloudfunctions/",
   "compileType": "miniprogram",
-  "libVersion": "3.15.1",
+  "libVersion": "3.16.1",
   "setting": {
     "urlCheck": true,
     "es6": true,
