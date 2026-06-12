@@ -1,5 +1,5 @@
 const { TOAST_COPIED, TOAST_SAVED } = require('../../utils/copywriting.js');
-const { callGenerate, callGetBlessing } = require('../../utils/api.js');
+const { callGenerate, callGetBlessing, callTrackShare } = require('../../utils/api.js');
 
 Page({
   data: {
@@ -67,6 +67,8 @@ Page({
         this.setData({ regenerating: false });
         if (res.result && res.result.code === 'OK') {
           this.loadBlessing(res.result.blessingId);
+        } else {
+          wx.showToast({ title: (res.result && res.result.message) || '重试失败', icon: 'none' });
         }
       })
       .catch(() => {
@@ -91,8 +93,13 @@ Page({
 
   onShareAppMessage() {
     const { holiday, currentText } = this.data;
+    if (this.data.blessingId) {
+      callTrackShare(this.data.blessingId, 'share_message').catch(err => {
+        console.error('track share failed:', err);
+      });
+    }
     return {
-      title: `我用「心祝祝福语」生成了${holiday}祝福，分享给你`,
+      title: `我用「心祝-祝福语」生成了${holiday}祝福，分享给你`,
       path: '/pages/index/index',
       imageUrl: this.data.savedPosterPath || '',
     };

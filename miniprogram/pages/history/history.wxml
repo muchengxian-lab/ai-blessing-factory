@@ -20,7 +20,7 @@
       <view class="item-header">
         <image class="item-icon" src="{{item.holidayIcon}}"></image>
         <view class="item-info">
-          <text class="item-holiday">{{item.holiday}} · {{item.target}}</text>
+          <text class="item-holiday">{{item.holiday}} · {{item.targetName}}</text>
           <text class="item-time">{{item.timeText}}</text>
         </view>
         <text class="item-arrow">›</text>

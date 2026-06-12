@@ -1,4 +1,103 @@
-# 发现与决策 — 心祝祝福语
+﻿# 发现与决策 — 心祝-祝福语
+
+## 技术发现（2026-06-13 真机与 UI 收敛）
+
+### 真机 AI definitions 缺失
+- **现象：** 开发者工具生成 AI 文案正常，真机生成固定 fallback 文案；真机日志报 `model hunyuan-v3 not found in definitions`，随后 `model cloudbase not found in definitions`。
+- **根因：** 手机微信版本过低，真机运行时 `wx.cloud.extend.AI` 的模型 definitions 未包含当前 AI provider。升级微信后 AI 生成恢复正常。
+- **结论：** 该问题不是云函数部署、AI 额度、内容安全或 `hunyuan-v3 / hy3-preview` 配置错误。真机 AI 异常排查时先确认微信版本和基础库，再看 provider/额度。
+- **保留措施：** `utils/api.js` 保留 fallback 诊断日志和 `aiErrorMessage`，开发版/体验版可在 Console 快速看到 AI 失败原因。
+
+### 海报与页面细节
+- **海报正文：** 最终版保持 AI 原文逐行展示，不再抽重点句或重组段落；正文加粗加深，端午浅色主题可读性通过截图复核。
+- **艺术字体决策：** 提审前不接自定义字体；小程序 Canvas 自定义字体涉及加载时机、真机兼容与版权，当前采用系统黑体加粗 + 轻阴影。
+- **首页生成按钮：** 加载态保留随机文案，但候选文案改为短句，避免胶囊按钮内换行、省略或溢出。
+- **历史页：** 数据库存储的 `target` id 在列表页统一映射为中文对象名，避免展示 `friend/elder`。
+
+## 项目同步发现（2026-06-12 跨会话核对）
+
+### 其他会话进展归并
+- **有效项目会话：** 2026-06-12 18:47 会话已完成 AI 生成链路最终验证：`createModel('hunyuan-v3')` + `hy3-preview` + `streamText({ data })` 能返回正常 SSE 文本，完整首页生成已入库为 `source=ai` 并进入预览页。
+- **已归档结论：** AI 额度看似不足的表象来自走错 provider；成长计划免费 Token 绑定在 `hunyuan-v3`，不是 `cloudbase`。该结论已写入 AI Provider 技术发现。
+- **无关会话：** 2026-06-12 22:15 同目录会话讨论“小微 B 端 AI 需求调研”，输出路径不在本项目，且未修改心祝小程序代码/文档。本项目文件不采纳其内容，避免污染当前 MVP 提审主线。
+- **当前风险收敛：** 自动化和开发者工具验证已覆盖 prepare、AI stream、save、msgSecCheck、入库、预览页、历史页、分享埋点、海报临时文件生成；唯一未闭环的是微信真机上的 Canvas 视觉与相册授权体验。
+- **提审前兼容性追加：** 已取消 Canvas 直接绘制 emoji，AI prompt 也不再要求输出 emoji；海报装饰改为矢量圆点/线条，避免 iOS/Android 字体渲染差异成为真机阻塞。
+
+## 技术发现（2026-06-12 AI 生成链路根因修复）
+
+### AI Provider：cloudbase vs hunyuan-v3
+- **根因：** `createModel('cloudbase')` 是 CloudBase AI 付费资源包路径，需单独购买 Token 包。小程序成长计划提供的免费 Token（`pkg-mz4yrwoo-ai-inspire-free`）绑定在 `createModel('hunyuan-v3')` provider 上。
+- **结论：** 成长计划用户必须使用 `createModel('hunyuan-v3')`，模型名 `hy3-preview`。
+- **API 调用格式：**
+  ```javascript
+  const res = await wx.cloud.extend.AI.createModel('hunyuan-v3').streamText({
+    data: { model: 'hy3-preview', messages: [...] }
+  });
+  for await (const event of res.eventStream) {
+    if (event.data === '[DONE]') break;
+    const delta = JSON.parse(event.data)?.choices?.[0]?.delta?.content;
+  }
+  ```
+  - 参数必须包在 `data` 字段里
+  - 响应是 SSE 流，通过 `eventStream` 异步迭代消费
+  - `generateText` 在 hunyuan-v3 上不可用（返回 `AI_MODEL_PARAM_REQUIRED`），必须用 `streamText`
+- **Provider 优先级（api.js）：** `hunyuan-v3` (hy3-preview，成长计划) → `cloudbase` (deepseek-v4-flash，付费备用)
+- **CloudBase AI+ 开通路径：** 控制台 → 左侧「AI+」（不是「扩展能力」）→ 快速接入 → 立即开通
+- **IDE 缓存注意：** 修改 `api.js` 等前端代码后，必须在开发者工具中「清除缓存 → 清除编译缓存」并重新编译，否则 IDE 加载旧版
+
+### 与周笺小记的差异
+- 周笺小记使用 `createModel('cloudbase')` + `hunyuan-turbo` 正常，因为其 CloudBase 环境 `cloud1-d3gyqgb5u56f1c49c` 可能配置了不同的计费模式
+- 心祝使用 `createModel('hunyuan-v3')` + `hy3-preview`，因为其成长计划 Token 绑定在此 provider
+- 两个项目 AppID 不同（`wx7f35ac0aff49fd67` vs `wxbd821527de589cb9`），CloudBase 环境也不同
+
+## 技术发现（2026-06-12 generateBlessing fallback 调试）
+
+### 内容安全 fallback 分支根因
+- **根因：** `generateBlessing/index.js` 在 AI 文案全部未通过 `msgSecCheck` 后会进入 fallback 分支，但代码调用了未定义的 `buildFallbackList()`，导致 fallback 入库前抛出运行时异常。
+- **线上补充根因：** 重新部署后通过开发者工具自动化直接调用云函数，确认 `msgSecCheck` 报 `-604101 function has no permission to call this API`。极短中性文案也失败，说明不是文案敏感，而是当前云函数没有内容安全 API 权限。
+- **修复：**
+  - 补齐 `buildFallbackList(holiday, target)`，返回 3 条中性 fallback 文案。
+  - 将频控检查前移到 prepare/save 共同入口，避免直接 save 绕过 30 秒频控。
+  - 首页和预览页改为展示云函数返回的具体 `message`，便于真机联调判断失败类型。
+  - 安全 API 不可用时不保存未审核 AI 内容，只保存内置 fallback 文案，保证主链路可用且风险可控。
+  - 修复 `通用祝福` / `感谢` fallback 文案，避免“通用祝福快乐”这类不自然表达。
+- **验证：**
+  - 本地 Node mock 模拟 AI 文案被安全审核拦截后，save 分支返回 `OK + blessingId`，`source=fallback`，并保存 3 条文案。
+  - 微信开发者工具自动化验证：首页生成进入预览页，返回正式环境 `blessingId`，历史页可见，分享埋点可写入，海报保存逻辑可产出临时图片路径。
+- **权限结论：** 公众平台“接口权限”页不需要手动找内容安全接口；云函数需要在 `generateBlessing/config.json` 声明 `permissions.openapi = ["security.msgSecCheck"]`。部署后已验证 `source=ai` + `msgSecCheck` 能成功入库。
+- **AI 额度结论：** `EXCEED_TOKEN_QUOTA_LIMIT` 来自错误 provider：`createModel('cloudbase')` 走付费资源包；成长计划免费额度绑定在 `createModel('hunyuan-v3')` + `hy3-preview`。
+- **最终验证：** 清除开发者工具编译缓存后，完整首页生成已返回 `source=ai`，并成功进入预览页。
+- **剩余验证：** 真机复核海报视觉。
+
+## 技术发现（2026-06-06 正式环境联调）
+
+### AI调用链路决策
+- **结论：** 心祝-祝福语采用周笺小记同款稳定链路：云函数只负责准备 Prompt、频控、内容安全和入库；AI 文生文放在小程序前端通过 `wx.cloud.extend.AI` 调用。
+- **原因：**
+  - `cloud.openapi.hunyuan.chatCompletions` 在云函数中报 `-604100 API not found`，说明该接口不适用于当前 `wx-server-sdk` 云调用链路。
+  - CloudBase Node SDK 方式在正式云函数里出现 `429` / 网络错误，短期不适合作为上线主链路。
+  - 周笺小记已验证：`wx.cloud.extend.AI.createModel('cloudbase')` + `hunyuan-turbo` 前端直调可行，并可 fallback 到 `hunyuan-exp`。
+- **当前实现：**
+  - `generateBlessing` 云函数双模式：
+    - 无 `content`：返回 `READY + systemPrompt + userPrompt + fallbackBlessings`
+    - 有 `content`：执行 `msgSecCheck`、写入 `blessings`、返回 `OK + blessingId`
+  - `utils/api.js` 负责：
+    - prepare 调云函数
+    - 前端调用 AI
+    - AI失败时改用 fallback
+    - save 调云函数入库
+- **内容安全策略：**
+  - AI内容不通过 `msgSecCheck` 时，不直接让用户失败。
+  - 自动降级到内置 fallback 文案并再次审核；通过后照常入库，`source = fallback`。
+  - 如 fallback 也被拦，下一步应将 fallback 文案改为更中性表达。
+
+### 正式环境配置
+- AppID：`wxbd821527de589cb9`
+- 云开发环境名称：`xinzhu`
+- 云开发环境 ID：`xinzhu-d7gtsc4pz7a9fa09b`
+- 数据库集合：`blessings`、`share_events`
+- 数据库权限：仅创建者可读写
+- 已确认主流程至少能写入 `blessings` 并返回 `blessingId`；AI联调仍在继续。
 
 ## 商业判断（2026-06-03更新）
 

@@ -1,78 +1,103 @@
 const cloud = require('wx-server-sdk');
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
+const { buildSystemPrompt, getFallback } = require('./prompt.js');
 
 exports.main = async (event) => {
-  const { holiday, target, style } = event;
+  const { holiday, target, style, content, source = 'ai', errorMessage = '' } = event;
   const wxContext = cloud.getWXContext();
   const userId = wxContext.OPENID;
 
-  // Rate limit: 1 per user per 30s
-  const { total: recentCount } = await db.collection('blessings')
-    .where({ userId, createdAt: db.command.gte(new Date(Date.now() - 30000)) })
-    .count();
-  if (recentCount > 0) {
+  if (!holiday || !target || !style) {
+    return { code: 'INVALID_PARAMS', message: '缺少生成参数' };
+  }
+
+  const recent = await getRecentCount(userId);
+  if (recent > 0) {
     return { code: 'TOO_FREQUENT', message: '请30秒后再试' };
   }
 
-  try {
-    const blessings = [];
-    const temps = [0.85, 0.92, 1.0];
+  if (content) {
+    return saveBlessing({
+      userId,
+      holiday,
+      target,
+      style,
+      content,
+      source,
+      errorMessage,
+    });
+  }
 
-    for (let i = 0; i < 3; i++) {
-      const { buildSystemPrompt } = require('./prompt.js');
-      const systemPrompt = buildSystemPrompt(holiday, target, style);
+  const fallback = getFallback(holiday, target);
 
-      const result = await cloud.openapi.hunyuan.chatCompletions({
-        model: 'hunyuan-turbo',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: `请为"${holiday}"生成一条发给"${target}"的祝福文案，风格"${style}"。` }
-        ],
-        temperature: temps[i],
-        max_tokens: 600,
-      });
+  return {
+    code: 'READY',
+    systemPrompt: buildSystemPrompt(holiday, target, style),
+    userPrompt: `请为「${holiday}」生成3条发给「${target}」的海报祝福短句，风格为「${style}」。
+每条4-6行，每行8-18个汉字。
+每条之间用单独一行 --- 分隔。
+不要编号，不要解释。`,
+    fallbackBlessings: [fallback, fallback, fallback],
+  };
+};
 
-      const text = (result.choices && result.choices[0] && result.choices[0].message.content) || '';
-      // Content security check
-      if (text) {
-        try {
-          const secRes = await cloud.openapi.security.msgSecCheck({
-            content: text,
-            version: 2,
-            openid: userId,
-            scene: 2,
-          });
-          if (secRes.result && secRes.result.suggest === 'pass') {
-            blessings.push(text.trim());
-          }
-        } catch (secErr) {
-          // If security check fails, skip this version
-          console.warn('msgSecCheck failed:', secErr);
-        }
-      }
+async function getRecentCount(userId) {
+  const recentStart = Date.now() - 30000;
+  const { total } = await db.collection('blessings')
+    .where({ userId, createdAt: db.command.gte(recentStart) })
+    .count();
+  return total;
+}
+
+async function saveBlessing(options) {
+  const { userId, holiday, target, style } = options;
+  let source = options.source === 'fallback' ? 'fallback' : 'ai';
+  let errorMessage = String(options.errorMessage || '').slice(0, 300);
+  let blessings = normalizeContent(options.content);
+
+  if (blessings.length === 0) {
+    return { code: 'EMPTY_CONTENT', message: '祝福语内容为空' };
+  }
+
+  const checked = await filterSafeContents(blessings, userId);
+  blessings = checked.safeContents;
+
+  if (blessings.length === 0) {
+    const fallbackChecked = await filterSafeContents(buildFallbackList(holiday, target), userId);
+    blessings = fallbackChecked.safeContents;
+    source = 'fallback';
+    errorMessage = errorMessage || checked.errorMessage || 'AI content blocked by security check';
+
+    if (blessings.length === 0 && isSecurityApiUnavailable(checked.errorMessage || fallbackChecked.errorMessage)) {
+      blessings = buildFallbackList(holiday, target);
+      errorMessage = 'Security API unavailable; saved curated fallback content';
     }
 
-    // Fallback if all versions failed
     if (blessings.length === 0) {
-      const fallback = getFallback(holiday, target);
-      blessings.push(fallback, fallback, fallback);
+      return {
+        code: 'CONTENT_BLOCKED',
+        message: '生成内容未通过安全审核，请重试',
+      };
     }
+  }
 
-    const emojiMap = {
-      '父亲节': '🎁', '端午节': '🎋', '七夕': '💕', '中秋节': '🌕',
-      '春节': '🧧', '教师节': '🍎', '母亲节': '🌸', '生日': '🎂',
-    };
-    const emoji = emojiMap[holiday] || '✨';
+  while (blessings.length < 3) {
+    blessings.push(blessings[blessings.length - 1]);
+  }
 
+  try {
     const res = await db.collection('blessings').add({
       data: {
+        _openid: userId,
         userId,
         holiday,
-        holidayEmoji: emoji,
+        holidayEmoji: getHolidayEmoji(holiday),
         target,
         style,
         content: blessings,
+        source,
+        errorMessage,
         createdAt: Date.now(),
       },
     });
@@ -81,28 +106,100 @@ exports.main = async (event) => {
       code: 'OK',
       blessingId: res._id,
       blessings,
+      source,
+      message: source === 'fallback' ? 'AI暂时不可用，已使用备用文案' : '',
     };
   } catch (err) {
-    console.error('generateBlessing error:', err);
-    const fallback = getFallback(holiday, target);
+    console.error('save blessing failed:', err);
     return {
-      code: 'FALLBACK',
-      blessings: [fallback, fallback, fallback],
-      message: 'AI暂时不可用，已使用备选文案',
+      code: 'DB_ERROR',
+      blessings,
+      message: '祝福语已生成，但保存失败，请检查数据库权限或集合配置',
     };
   }
-};
+}
 
-function getFallback(holiday, target) {
-  const map = {
-    '父亲节': '爸，平时话少，但心里都有。这些年您撑起这个家，辛苦了。父亲节快乐。',
-    '端午节': '端午安康！愿你生活像粽子一样，甜甜蜜蜜，层层惊喜。',
-    '七夕': '愿与你共度每一个朝夕，携手看尽世间繁华。七夕快乐。',
-    '中秋节': '月圆人团圆，愿你和家人幸福安康，中秋快乐！',
-    '母亲节': '妈，您的爱是我永远的港湾。母亲节快乐，身体健康。',
-    '教师节': '师恩难忘，感谢您的教导与陪伴。祝老师节日快乐！',
-    '春节': '新年快乐！愿你新的一年万事如意，幸福安康！',
-    '生日': '生日快乐！愿新的一岁，所有美好如期而至。',
+function normalizeContent(content) {
+  const list = Array.isArray(content) ? content : [content];
+  return list
+    .map(item => String(item || '').trim())
+    .filter(item => item.length > 0)
+    .slice(0, 3);
+}
+
+async function filterSafeContents(contents, userId) {
+  const safeContents = [];
+  const blockedDetails = [];
+
+  for (let i = 0; i < contents.length; i += 1) {
+    try {
+      const secRes = await cloud.openapi.security.msgSecCheck({
+        content: contents[i],
+        version: 2,
+        openid: userId,
+        scene: 2,
+      });
+      if (isSecurityPass(secRes)) {
+        safeContents.push(contents[i]);
+      } else {
+        console.warn('msgSecCheck blocked content:', {
+          errCode: secRes.errCode,
+          errMsg: secRes.errMsg,
+          suggest: secRes.result && secRes.result.suggest,
+          label: secRes.result && secRes.result.label,
+        });
+        blockedDetails.push({
+          errCode: secRes.errCode,
+          errMsg: secRes.errMsg,
+          suggest: secRes.result && secRes.result.suggest,
+          label: secRes.result && secRes.result.label,
+        });
+      }
+    } catch (err) {
+      console.warn('msgSecCheck failed:', err);
+      return {
+        safeContents: [],
+        blockedDetails,
+        errorMessage: err && err.message ? err.message : String(err),
+      };
+    }
+  }
+
+  return { safeContents, blockedDetails };
+}
+
+function isSecurityPass(secRes) {
+  if (!secRes) return false;
+  const result = secRes.result || {};
+  if (result.suggest) return result.suggest === 'pass';
+  return secRes.errCode === 0 || secRes.errCode === '0' || /:ok$/i.test(secRes.errMsg || '');
+}
+
+function isSecurityApiUnavailable(message) {
+  return /-604101|no permission to call this API/i.test(message || '');
+}
+
+function buildFallbackList(holiday, target) {
+  const fallback = getFallback(holiday, target);
+  return [
+    fallback,
+    `${fallback} 愿这份心意被好好收到，也愿接下来的每一天都平安顺遂。`,
+    `${fallback} 把最真诚的祝福送给你，愿生活从容，万事顺意。`,
+  ];
+}
+
+function getHolidayEmoji(holiday) {
+  const emojiMap = {
+    '父亲节': '🎁',
+    '端午节': '🧵',
+    '七夕': '💌',
+    '情人节': '💌',
+    '中秋节': '🌕',
+    '春节': '🧧',
+    '新年': '🧧',
+    '教师节': '💐',
+    '母亲节': '🌷',
+    '生日': '🎂',
   };
-  return map[holiday] || `祝${holiday}快乐！愿你和家人幸福安康。`;
+  return emojiMap[holiday] || '✨';
 }

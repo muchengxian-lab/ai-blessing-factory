@@ -17,7 +17,7 @@ const THEMES = {
   dragon_boat: {
     aliases: ['端午节'],
     bg: ['#F8F1DD', '#DDE9D2'],
-    text: '#263728',
+    text: '#163225',
     muted: 'rgba(38,55,40,0.62)',
     accent: '#497E5A',
     accentSoft: 'rgba(73,126,90,0.13)',
@@ -101,20 +101,111 @@ const THEMES = {
 };
 
 function composePoster(ctx, options) {
-  const { text = '', holiday = '' } = options;
+  const { text = '', holiday = '', holidayEmoji = '✨', styleId = 'warm' } = options;
   const theme = resolveTheme(holiday);
+  const layout = buildPosterLayout(text, holiday, styleId);
 
   drawBackground(ctx, theme);
   theme.motif(ctx, theme);
   drawFrame(ctx, theme);
-  drawHeader(ctx, holiday || '心意祝福', theme);
-  drawBlessingText(ctx, text, theme);
-  drawFooter(ctx, theme);
+  drawHeader(ctx, holiday || '心意祝福', holidayEmoji, theme, layout, styleId);
+  drawBlessingText(ctx, layout, holidayEmoji, theme, styleId);
+  drawFooter(ctx, holidayEmoji, theme);
 }
 
 function resolveTheme(holiday) {
   const key = Object.keys(THEMES).find(name => THEMES[name].aliases.includes(holiday));
   return THEMES[key] || THEMES.general;
+}
+
+function buildPosterLayout(text, holiday, styleId) {
+  const title = buildPosterTitle(holiday, styleId);
+  return {
+    title,
+    titleLines: splitTitle(title),
+    contentLines: buildContentLines(text, holiday),
+    footnote: buildFootnote(holiday, styleId),
+  };
+}
+
+function buildContentLines(text, holiday) {
+  const explicitLines = String(text || '')
+    .replace(/\r\n/g, '\n')
+    .replace(/\r/g, '\n')
+    .split('\n')
+    .map(normalizeContentLine)
+    .filter(Boolean);
+  if (explicitLines.length > 0) return explicitLines;
+
+  const sentenceLines = splitSentences(text).map(normalizeContentLine).filter(Boolean);
+  if (sentenceLines.length > 0) return sentenceLines;
+  return [`${holiday || '这份'}祝福`, '愿你日日顺遂', '心里常有暖意'];
+}
+
+function normalizeContentLine(line) {
+  return String(line || '')
+    .replace(/^\s*(?:\d+[\.\、\)]|[-*])\s*/, '')
+    .replace(/[ \t]+/g, ' ')
+    .trim();
+}
+
+function splitSentences(text) {
+  const parts = String(text || '').match(/[^。！？!?；;]+[。！？!?；;]?/g) || [];
+  return parts.map(s => s.trim()).filter(Boolean);
+}
+
+function buildPosterTitle(holiday, styleId) {
+  const titleMap = {
+    父亲节: '父爱如山\n岁月有光',
+    端午节: '粽香入夏\n安康常在',
+    七夕: '星河有约\n爱意成诗',
+    情人节: '星河有约\n爱意成诗',
+    中秋节: '月满人圆\n心意同归',
+    教师节: '一朝沐教\n一生念恩',
+    春节: '新岁启封\n万事生光',
+    新年: '新岁启封\n万事生光',
+    生日: '岁岁欢喜\n日日生光',
+    感谢: '承蒙相遇\n感恩在心',
+  };
+  const fallback = {
+    formal: '敬意入笺\n祝福成章',
+    humor: '把好运打包\n把快乐送达',
+    literary: '清风入怀\n心意成诗',
+    classic: '良辰有信\n吉语相赠',
+    minimal: '一句心意\n认真送达',
+    warm: '心意有光\n祝福抵达',
+  };
+  return titleMap[holiday] || fallback[styleId] || fallback.warm;
+}
+
+function splitTitle(title) {
+  if (title.includes('\n')) return title.split('\n').filter(Boolean).slice(0, 2);
+  if (title.length <= 8) return [title];
+  return [title.slice(0, 6), title.slice(6, 12)];
+}
+
+function buildFootnote(holiday, styleId) {
+  const styleNotes = {
+    warm: '把平日里没说出口的话，认真写成祝福',
+    formal: '愿敬意与祝福，都被妥帖送达',
+    humor: '把快乐打包，也把心意送到',
+    literary: '愿清风有信，心意成诗',
+    classic: '良辰有信，吉语相赠',
+    minimal: '一句心意，认真送达',
+  };
+  const holidayNotes = {
+    父亲节: '愿岁月从容，也愿您多些轻松',
+    端午节: '愿安康常伴，顺遂入夏',
+    七夕: '愿爱意有回声，日日皆相伴',
+    情人节: '愿爱意有回声，日日皆相伴',
+    中秋节: '愿月圆人安，心意同归',
+    教师节: '愿桃李有光，师恩长念',
+    春节: '愿新岁有光，万事顺遂',
+    新年: '愿新岁有光，万事顺遂',
+    生日: '愿新一岁，日日生光',
+    感谢: '愿这份感谢，被郑重收到',
+  };
+  return holidayNotes[holiday] || styleNotes[styleId] || styleNotes.warm;
 }
 
 function drawBackground(ctx, theme) {
@@ -126,10 +217,10 @@ function drawBackground(ctx, theme) {
 
   setFill(ctx, theme.accentSoft);
   ctx.beginPath();
-  ctx.arc(W - 80, 130, 220, 0, Math.PI * 2);
+  ctx.arc(W + 42, 105, 172, 0, Math.PI * 2);
   ctx.fill();
   ctx.beginPath();
-  ctx.arc(55, H - 120, 180, 0, Math.PI * 2);
+  ctx.arc(-22, H - 42, 150, 0, Math.PI * 2);
   ctx.fill();
 }
 
@@ -142,84 +233,194 @@ function drawFrame(ctx, theme) {
   roundRect(ctx, 66, 66, W - 132, H - 132, 22, false, true);
 }
 
-function drawHeader(ctx, holiday, theme) {
+function drawHeader(ctx, holiday, emoji, theme, layout, styleId) {
   setAlign(ctx, 'center');
-  setFont(ctx, 24, '600');
+  setFont(ctx, 22, '600');
   setFill(ctx, theme.muted);
-  ctx.fillText('心 祝', W / 2, 118);
+  ctx.fillText('心 祝 · 专 属 祝 福 海 报', W / 2, 110);
 
-  setFont(ctx, 46, '700');
+  drawPill(ctx, W / 2 - 74, 138, 148, 44, holiday, theme);
+
+  const titleLines = layout.titleLines;
+  const titleSize = titleLines.length > 1 ? 48 : 54;
+  const titleStartY = titleLines.length > 1 ? 252 : 270;
+  const titleGrad = ctx.createLinearGradient(160, 190, 590, 318);
+  titleGrad.addColorStop(0, theme.accent);
+  titleGrad.addColorStop(0.55, theme.text);
+  titleGrad.addColorStop(1, theme.accent);
+  setShadow(ctx, 'rgba(0,0,0,0.26)', 0, 8, 18);
+  setFont(ctx, titleSize, styleId === 'formal' ? '700' : '800');
+  setFill(ctx, titleGrad);
+  titleLines.forEach((line, index) => {
+    ctx.fillText(line, W / 2, titleStartY + index * 62);
+  });
+  clearShadow(ctx);
+
   setFill(ctx, theme.accent);
-  ctx.fillText(holiday, W / 2, 190);
-
+  ctx.fillRect(W / 2 - 86, titleStartY + titleLines.length * 62 - 24, 172, 3);
   setFill(ctx, theme.accent);
-  ctx.fillRect(W / 2 - 70, 225, 140, 3);
+  ctx.fillRect(W / 2 - 28, titleStartY + titleLines.length * 62 - 12, 56, 3);
 
-  drawSeal(ctx, W / 2 + 92, 176, theme);
+  drawCornerMark(ctx, W / 2 + 168, titleStartY - 30, theme);
 }
 
-function drawBlessingText(ctx, text, theme) {
+function drawBlessingText(ctx, layout, emoji, theme, styleId) {
   const cardX = 82;
-  const cardY = 285;
+  const cardY = 385;
   const cardW = W - 164;
-  const cardH = 765;
+  const cardH = 660;
 
+  setShadow(ctx, 'rgba(0,0,0,0.18)', 0, 10, 24);
   setFill(ctx, theme.card);
   roundRect(ctx, cardX, cardY, cardW, cardH, 28, true, false);
+  clearShadow(ctx);
   setStroke(ctx, theme.cardStroke);
   ctx.lineWidth = 2;
   roundRect(ctx, cardX, cardY, cardW, cardH, 28, false, true);
 
-  setAlign(ctx, 'left');
-  setFill(ctx, theme.text);
-  const fontSize = text.length > 190 ? 28 : text.length > 130 ? 30 : 33;
-  const lineHeight = Math.round(fontSize * 1.82);
-  setFont(ctx, fontSize, '400');
+  drawVerseBlock(ctx, layout, emoji, theme, cardX + 44, cardY + 54, cardW - 88, styleId);
 
-  const lines = splitText(ctx, text, cardW - 92);
-  const maxLines = Math.floor((cardH - 112) / lineHeight);
-  const displayLines = lines.slice(0, maxLines);
-  const startY = cardY + 78;
-
-  displayLines.forEach((line, index) => {
-    ctx.fillText(line, cardX + 46, startY + index * lineHeight);
-  });
-
-  if (lines.length > maxLines) {
-    setFill(ctx, theme.muted);
-    ctx.fillText('...', cardX + 46, startY + maxLines * lineHeight);
-  }
+  setAlign(ctx, 'center');
+  setFont(ctx, 24, '400');
+  setFill(ctx, theme.muted);
+  ctx.fillText(layout.footnote, cardX + cardW / 2, cardY + cardH - 58);
+  setFill(ctx, theme.cardStroke);
+  ctx.fillRect(cardX + cardW / 2 - 42, cardY + cardH - 30, 84, 2);
 }
 
-function drawFooter(ctx, theme) {
+function drawVerseBlock(ctx, layout, emoji, theme, x, y, w, styleId) {
+  setAlign(ctx, 'center');
+  setFill(ctx, theme.cardStroke);
+  const dividerY = y + 12;
+  ctx.fillRect(x + w / 2 - 70, dividerY, 140, 2);
+  ctx.fillRect(x + w / 2 - 20, dividerY + 10, 40, 2);
+
+  const fitted = fitPosterLines(ctx, layout.contentLines, w, 410);
+  const blockHeight = (fitted.lines.length - 1) * fitted.lineHeight;
+  const startY = y + 90 + Math.max(0, (410 - blockHeight) / 2) - 20;
+
+  setShadow(ctx, getBodyShadow(theme), 0, 2, 4);
+  fitted.lines.forEach((line, index) => {
+    setFont(ctx, fitted.fontSize, '800');
+    setFill(ctx, theme.text);
+    ctx.fillText(line, x + w / 2, startY + index * fitted.lineHeight);
+  });
+  clearShadow(ctx);
+
+  drawCenterOrnament(ctx, x + w / 2, startY + fitted.lines.length * fitted.lineHeight + 4, theme);
+}
+
+function fitPosterLines(ctx, sourceLines, maxWidth, maxHeight) {
+  const candidates = [34, 32, 30, 28, 26, 24, 22];
+  for (let i = 0; i < candidates.length; i++) {
+    const fontSize = candidates[i];
+    const lineHeight = Math.round(fontSize * 1.55);
+    setFont(ctx, fontSize, '800');
+    const lines = wrapContentLines(ctx, sourceLines, maxWidth);
+    if ((lines.length - 1) * lineHeight <= maxHeight) {
+      return { lines, fontSize, lineHeight };
+    }
+  }
+
+  const fontSize = 22;
+  setFont(ctx, fontSize, '800');
+  const lines = wrapContentLines(ctx, sourceLines, maxWidth);
+  const lineHeight = Math.max(30, Math.floor(maxHeight / Math.max(lines.length - 1, 1)));
+  return { lines, fontSize, lineHeight };
+}
+
+function wrapContentLines(ctx, sourceLines, maxWidth) {
+  const lines = [];
+  sourceLines.forEach(line => {
+    splitText(ctx, line, maxWidth).forEach(part => {
+      if (part) lines.push(part);
+    });
+  });
+  return lines.length ? lines : ['心意认真送达'];
+}
+
+function getBodyShadow(theme) {
+  return isLightHexColor(theme.text)
+    ? 'rgba(0,0,0,0.38)'
+    : 'rgba(255,255,255,0.68)';
+}
+
+function isLightHexColor(color) {
+  const value = String(color || '').replace('#', '');
+  if (!/^[0-9a-fA-F]{6}$/.test(value)) return false;
+  const r = parseInt(value.slice(0, 2), 16);
+  const g = parseInt(value.slice(2, 4), 16);
+  const b = parseInt(value.slice(4, 6), 16);
+  return (r * 299 + g * 587 + b * 114) / 1000 > 170;
+}
+
+function drawPill(ctx, x, y, w, h, text, theme) {
+  setFill(ctx, theme.accentSoft);
+  roundRect(ctx, x, y, w, h, h / 2, true, false);
+  setStroke(ctx, theme.cardStroke);
+  ctx.lineWidth = 1;
+  roundRect(ctx, x, y, w, h, h / 2, false, true);
+  setAlign(ctx, 'center');
+  setFont(ctx, 22, '600');
+  setFill(ctx, theme.accent);
+  ctx.fillText(text, x + w / 2, y + 29);
+}
+
+function drawFooter(ctx, emoji, theme) {
   setAlign(ctx, 'center');
   setFont(ctx, 22, '400');
   setFill(ctx, theme.muted);
-  ctx.fillText('AI生成 · 心祝祝福语', W / 2, H - 102);
+  ctx.fillText('AI生成 · 心祝-祝福语', W / 2, H - 102);
   setFont(ctx, 20, '400');
   ctx.fillText('把说不出口的心意，认真送达', W / 2, H - 68);
 }
 
-function drawSeal(ctx, x, y, theme) {
-  setFill(ctx, theme.seal);
-  roundRect(ctx, x, y, 42, 42, 8, true, false);
-  setAlign(ctx, 'center');
-  setFill(ctx, 'rgba(255,245,230,0.9)');
-  setFont(ctx, 20, '700');
-  ctx.fillText('祝', x + 21, y + 28);
+function drawCenterOrnament(ctx, x, y, theme) {
+  setFill(ctx, theme.accent);
+  ctx.beginPath();
+  ctx.arc(x, y, 5, 0, Math.PI * 2);
+  ctx.fill();
+  setFill(ctx, theme.cardStroke);
+  ctx.beginPath();
+  ctx.arc(x - 24, y, 3, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(x + 24, y, 3, 0, Math.PI * 2);
+  ctx.fill();
+  setStroke(ctx, theme.cardStroke);
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(x - 58, y);
+  ctx.lineTo(x - 34, y);
+  ctx.moveTo(x + 34, y);
+  ctx.lineTo(x + 58, y);
+  ctx.stroke();
+}
+
+function drawCornerMark(ctx, x, y, theme) {
+  setStroke(ctx, theme.cardStroke);
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(x, y);
+  ctx.lineTo(x + 34, y);
+  ctx.lineTo(x + 34, y + 34);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x + 12, y + 46);
+  ctx.lineTo(x + 46, y + 46);
+  ctx.stroke();
 }
 
 function drawMountainMotif(ctx, theme) {
   setStroke(ctx, theme.accentSoft);
-  ctx.lineWidth = 4;
+  ctx.lineWidth = 3;
   ctx.beginPath();
-  ctx.moveTo(92, 1080);
-  ctx.lineTo(230, 870);
-  ctx.lineTo(340, 1010);
-  ctx.lineTo(455, 820);
-  ctx.lineTo(650, 1080);
+  ctx.moveTo(98, 1160);
+  ctx.lineTo(240, 1010);
+  ctx.lineTo(350, 1135);
+  ctx.lineTo(475, 980);
+  ctx.lineTo(646, 1160);
   ctx.stroke();
-  drawStars(ctx, theme, 10);
 }
 
 function drawLeafMotif(ctx, theme) {
@@ -322,8 +523,9 @@ function drawOsmanthus(ctx, theme, x, y) {
 function splitText(ctx, text, maxWidth) {
   const lines = [];
   let current = '';
-  for (let i = 0; i < text.length; i++) {
-    const ch = text[i];
+  const chars = Array.from(String(text || ''));
+  for (let i = 0; i < chars.length; i++) {
+    const ch = chars[i];
     if (ch === '\n') {
       if (current) lines.push(current);
       current = '';
@@ -375,6 +577,17 @@ function setAlign(ctx, value) {
 function setFont(ctx, size, weight) {
   if (ctx.setFontSize) ctx.setFontSize(size);
   ctx.font = `${weight || '400'} ${size}px -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif`;
+}
+
+function setShadow(ctx, color, offsetX, offsetY, blur) {
+  ctx.shadowColor = color;
+  ctx.shadowOffsetX = offsetX;
+  ctx.shadowOffsetY = offsetY;
+  ctx.shadowBlur = blur;
+}
+
+function clearShadow(ctx) {
+  setShadow(ctx, 'transparent', 0, 0, 0);
 }
 
 module.exports = { composePoster };

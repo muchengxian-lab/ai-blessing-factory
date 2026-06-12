@@ -1,14 +1,16 @@
-<view class="style-grid">
-  <view
-    class="style-item {{item.id === active ? 'style-active' : ''}}"
-    wx:for="{{styles}}"
-    wx:key="id"
-    wx:for-item="item"
-    bindtap="onSelect"
-    data-id="{{item.id}}"
-  >
-    <image class="style-icon" src="{{item.icon}}"></image>
-    <text class="style-name">{{item.name}}</text>
-    <text class="style-desc">{{item.desc}}</text>
+<scroll-view class="style-scroll" scroll-x="true" enhanced="{{true}}" show-scrollbar="{{false}}">
+  <view class="style-row">
+    <view
+      class="style-item {{item.id === active ? 'style-active' : ''}}"
+      wx:for="{{styles}}"
+      wx:key="id"
+      wx:for-item="item"
+      bindtap="onSelect"
+      data-id="{{item.id}}"
+    >
+      <image class="style-icon" src="{{item.icon}}"></image>
+      <text class="style-name">{{item.name}}</text>
+      <text class="style-desc">{{item.desc}}</text>
+    </view>
   </view>
-</view>
+</scroll-view>

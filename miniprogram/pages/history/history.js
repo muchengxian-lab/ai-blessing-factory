@@ -1,5 +1,11 @@
 const { callListHistory } = require('../../utils/api.js');
 const { getHolidayIconByName } = require('../../utils/holidays.js');
+const { TARGETS } = require('../../utils/theme.js');
+
+const TARGET_NAME_MAP = TARGETS.reduce((map, item) => {
+  map[item.id] = item.name;
+  return map;
+}, {});
 
 Page({
   data: { list: [], loading: true },
@@ -17,6 +23,7 @@ Page({
             : (item.content || '').slice(0, 50) + '...',
           timeText: this.formatTime(item.createdAt),
           holidayIcon: getHolidayIconByName(item.holiday),
+          targetName: TARGET_NAME_MAP[item.target] || item.target || '通用',
         }));
         this.setData({ list, loading: false });
       })

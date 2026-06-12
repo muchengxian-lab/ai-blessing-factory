@@ -68,8 +68,8 @@ Component({
             success: () => {
               this.triggerEvent('save', { path: res.tempFilePath });
             },
-            fail: () => {
-              wx.showToast({ title: '请授权相册权限', icon: 'none' });
+            fail: err => {
+              this.handleAlbumSaveFail(err);
             },
           });
         },
@@ -77,6 +77,21 @@ Component({
           wx.showToast({ title: '保存失败', icon: 'none' });
         },
       });
+    },
+    handleAlbumSaveFail(err) {
+      const msg = err && err.errMsg ? err.errMsg : '';
+      if (/auth deny|auth denied|authorize no response|fail cancel/i.test(msg)) {
+        wx.showModal({
+          title: '需要相册权限',
+          content: '请在设置中允许保存图片到相册。',
+          confirmText: '去设置',
+          success: res => {
+            if (res.confirm) wx.openSetting();
+          },
+        });
+        return;
+      }
+      wx.showToast({ title: '保存失败', icon: 'none' });
     },
   },
 });

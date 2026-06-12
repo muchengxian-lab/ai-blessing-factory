@@ -1,4 +1,4 @@
-# 任务计划：心祝祝福语
+﻿# 任务计划：心祝-祝福语
 
 ## 目标
 做一个微信AI小程序，用户选节日+选对象+选风格后，AI生成祝福文案+海报，一键转发微信好友。利用社交裂变（发祝福=传播）在父亲节（6/21）前完成MVP和冷启动。
@@ -7,14 +7,21 @@
 - **类型：** 微信AI小程序
 - **技术栈：** 微信原生 + 微信云开发 + 混元大模型
 - **开发周期：** 3-5天（MVP）
-- **首个节点：** 父亲节 2026-06-21（距今15天）
+- **首个节点：** 父亲节 2026-06-21（距今9天）
 - **项目路径：** `C:\Users\Administrator\ai-blessing-factory\`
 - **定位：** 免费传播工具 + 双节点验证（非付费工具）
 
 ---
 
 ## 当前阶段
-阶段 2.4：GUI配置（代码+UI+安全+节日海报模板完成，9次Git提交，当前UI模板变更待提交）
+阶段 3：提审与上线（备案审核与微信认证已提交；AI 生成链路已贯通，海报视觉已升级；待备案/认证结果、真机复核和代码审核）
+
+## 跨会话同步状态
+- **2026-06-12 已同步：** 18:47 会话的 AI provider 根因修复、`hunyuan-v3 / hy3-preview` 流式调用验证、`source=ai` 完整首页链路通过、海报 emoji 装饰与剩余真机验证事项已写入 `progress.md` / `findings.md` / 本计划。
+- **2026-06-12 已排除：** 22:15 同目录会话主要讨论“小微 B 端 AI 需求调研”，输出不在本项目目录内，未产生心祝小程序代码或规划变更。
+- **2026-06-12 已追加：** Canvas 不再绘制 emoji，AI prompt 不再要求 emoji；海报装饰改为稳定矢量元素，相册拒权后可引导打开设置。
+- **2026-06-13 已追加：** 海报正文保持 AI 原文逐行一致并加粗；首页生成按钮加载文案改短句；真机 AI fallback 根因确认为手机微信版本过低；历史页对象 id 改中文展示。
+- **当前剩余主线：** 等待备案审核和微信认证结果；新版微信真机复核完整链路与相册授权流程；通过后进入代码审核/发布。
 
 ## UI设计系统
 - **风格：** 星云夜幕（暗色玻璃拟态）
@@ -36,7 +43,7 @@
 - [x] 确定v1.0功能清单（50项，4页+5云函数+8组件）
 - [x] 确定页面结构（首页/海报预览/历史/我的）
 - [x] 确定UI风格（6套风格配色方案）
-- [x] 确认混元API选型（文生文hunyuan-turbo + 文生图hunyuan-image）
+- [x] 确认混元API选型（文生文 `hunyuan-v3 / hy3-preview`；海报使用 Canvas 节日主题模板）
 - [x] 确认微信类目选择（工具>信息查询）
 - [x] 确定变现模型v1（个人主体阶段：纯免费跑数据 + 流量主广告 + B端线下服务）
 - [x] 创建全套产品文档（PRD+功能清单+技术路线+介绍+README+SKILLS+.gitignore）
@@ -61,14 +68,14 @@
 ### 阶段 2.2：UI改版
 - [x] 星云夜幕设计系统（暗色玻璃拟态）
 - [x] 6个SVG TabBar图标（灰常态/金选中）
-- [x] 命名：AI祝福工厂 → 心祝 → 心祝祝福语
+- [x] 命名：AI祝福工厂 → 心祝 → 心祝-祝福语
 - **状态：** complete
 
 ### 阶段 2.3：代码审查修复
 - [x] 🔴 数据权限：history.js/preview.js改云函数 + userId校验 + 新增getBlessing
 - [x] 🔴 msgSecCheck：generateBlessing逐版审核
 - [x] 🔴 频控收紧：30s内>2次→1次
-- [x] 🔴 AI调用统一：去除前端混元封装，统一cloud.openapi
+- [x] 🔴 AI调用链路复盘：cloud.openapi 路径已废弃，恢复周笺小记同款前端 `wx.cloud.extend.AI` + 云函数 prepare/save
 - [x] 🟡 海报保存：preview.js绑定poster-canvas实际保存
 - [x] 🟡 WXSS伪元素改真实view（glow-top/glow-bottom）
 - [x] 🟡 wx-server-sdk固定~3.0.0
@@ -93,22 +100,51 @@
 - [x] JS语法检查通过，WXSS无gap/伪元素
 - **状态：** complete（待真机视觉确认）
 
+### 阶段 2.8：正式环境与AI链路联调
+- [x] 正式小程序 AppID 替换为 `wxbd821527de589cb9`
+- [x] 正式云环境 ID 替换为 `xinzhu-d7gtsc4pz7a9fa09b`
+- [x] 生成并提交统一视觉头像 `app-avatar-xinzhu-unified-512.png`
+- [x] 用户已部署云函数并创建 `blessings` / `share_events` 集合
+- [x] 数据库权限设为”仅创建者可读写”
+- [x] 排除云函数 `cloud.openapi.hunyuan.chatCompletions` 路径（报 `-604100 API not found`）
+- [x] 排除 CloudBase Node SDK 作为短期主链路（出现 `429` / 网络错误）
+- [x] 迁移为周笺小记同款：云函数 prepare/save + 前端 `wx.cloud.extend.AI`
+- [x] AI内容安全不通过时自动 fallback 入库
+- [x] 修复 fallback 分支缺失 `buildFallbackList()` 导致入库前异常
+- [x] 本地 mock 验证 `source=fallback` 可返回 `OK + blessingId`
+- [x] 重新部署 `generateBlessing` 并验证返回 `OK + blessingId`
+- [x] 验证 `source=fallback` 能进入预览页
+- [x] 验证历史记录、分享记录、海报保存逻辑
+- [x] 通过 `generateBlessing/config.json` 声明 `security.msgSecCheck` 权限并验证 `source=ai` 入库
+- [x] **AI 生成链路修复：** 成长计划 Token 走 `createModel('hunyuan-v3')` 而非 `cloudbase`；`streamText` 参数需包在 `data` 里；SSE 流通过 `eventStream` 解析
+- [x] **CloudBase AI+ 开通：** 控制台 → AI+（非扩展能力）→ 快速接入
+- [x] **海报装饰收敛：** 取消 Canvas 直接绘制 emoji，改为稳定矢量圆点/线条；正文按 AI 原始换行逐行保留并加粗
+- [x] **真机 AI 排查：** `model ... not found in definitions` 根因为手机微信版本过低；升级微信后 AI 生成正常
+- [x] **首页/历史页细节：** 生成按钮加载文案改短句；历史页 target id 改中文对象名
+- [ ] 新版微信真机完整复核海报 Canvas 视觉和相册授权
+- **状态：** complete（AI 链路已贯通，提审前做最终真机复核）
+
 ### 阶段 2.4：GUI配置（需手动操作）
-- [ ] 注册新小程序（AppID）- mp.weixin.qq.com
-- [ ] 小程序命名（心祝祝福语，已选定）
-- [ ] 微信开发者工具导入项目
-- [ ] 开通云开发环境 + 创建blessings/share_events集合
-- [ ] 部署5个云函数（generateBlessing/listHistory/getBlessing/trackShare/getStats）
-- [ ] 修改app.js中的云环境ID
-- [ ] 真机预览测试
-- **状态：** pending
+- [x] 注册新小程序（AppID）- mp.weixin.qq.com
+- [x] 小程序命名（心祝-祝福语，已选定）
+- [x] 微信开发者工具导入项目
+- [x] 开通云开发环境 + 创建blessings/share_events集合
+- [x] 部署5个云函数（generateBlessing/listHistory/getBlessing/trackShare/getStats）
+- [x] 修改app.js中的云环境ID
+- [x] 开发者工具自动化主链路测试
+- [ ] 真机预览测试（重点：新版微信完整生成链路、海报视觉、相册授权）
+- **状态：** in_progress
 
 ### 阶段 3：提审与上线
+- [x] 备案审核提交（2026-06-12）
+- [x] 微信认证提交（2026-06-12）
+- [ ] 备案审核通过
+- [ ] 微信认证通过
 - [ ] 名称审核
 - [ ] 类目审核
 - [ ] 代码审核
 - [ ] 上线发布
-- **状态：** pending
+- **状态：** in_progress
 
 ### 阶段 4：冷启动（父亲节6/21）
 - [ ] 种子用户获取（朋友圈+微信群）
@@ -128,8 +164,8 @@
 
 ## 关键问题
 
-1. 父亲节（6/21）之前能否完成审核上线？微信审核通常3-7个工作日
-2. 小程序命名——「心祝祝福语」商标状态待查
+1. 父亲节（6/21）之前能否完成审核上线？备案审核与微信认证已于 2026-06-12 提交，待结果；微信审核通常3-7个工作日
+2. 小程序命名——「心祝-祝福语」商标状态待查
 3. 深度合成类目审核——当前同类项目路径已验证个人主体基本可行，重点转为代码提审与备案节奏
 4. ~~首版付费~~ → 已确认：纯免费跑数据，不接支付
 5. 海报视觉质量是否足以驱动传播？→ 已升级为多节日主题模板，待真机预览验证
@@ -149,7 +185,7 @@
 | 决策 | 选项 | 理由 |
 |------|------|------|
 | 小程序框架 | 微信原生 | 牛马周记已验证，不要换 |
-| AI模型 | 混元大模型 | 免费1亿Token，云函数cloud.openapi调用 |
+| AI模型 | 混元大模型 | 文案使用前端 `wx.cloud.extend.AI` 调用；云函数只做prepare/save/审核/入库 |
 | 图片生成 | 混元文生图 | 1万张免费额度 |
 | 海报渲染 | Canvas 2D | 小程序原生，750×1334规格，多节日主题 |
 | 云开发 | 微信云开发 | 免费额度，环境已就绪 |
@@ -169,14 +205,19 @@
 | flex子元素width:0 | 牛马周记兼容性 | scroll-view中flex子元素必须width:0 |
 | 删除/更新校验所有权 | 代码审查强制项 | 所有数据操作查userId |
 | 生成函数加频控 | 代码审查强制项 | 30秒内同一用户最多1次 |
-| emoji用SVG不用emoji | 牛马周记教训 | iPhone/Android渲染不一致 |
+| emoji用SVG/矢量装饰不用Canvas文字emoji | 牛马周记教训 | iPhone/Android渲染不一致 |
 | 变现：纯免费跑数据 | 个人主体无微信支付 | 阶段1零收入→阶段2广告→阶段3 B端→阶段4企业主体 |
 | 父亲节DAU<500即止损 | 商业分析结论 | 不堆功能，转为维护模式 |
 
 ## 遇到的错误
 | 错误 | 尝试次数 | 解决方案 |
 |------|---------|---------|
-|      |         |         |
+| AI 调用返回 `EXCEED_TOKEN_QUOTA_LIMIT`（所有模型） | 7+ | 根因：成长计划 Token 绑定在 `hunyuan-v3` provider，非 `cloudbase`。改用 `createModel('hunyuan-v3')` + `hy3-preview` |
+| `createModel('hunyuan-turbo')` 直接传模型名 → `AI_MODEL_NOT_FOUND` | 2 | `createModel` 参数是 provider 名，模型名在 `generateText/streamText` 的 `data.model` 里传 |
+| `generateText` 在 hunyuan-v3 上 → `AI_MODEL_PARAM_REQUIRED` | 1 | hunyuan-v3 必须用 `streamText` |
+| `streamText` 不传 `data` 包装 → 流返回 0 事件 | 3 | 参数必须包在 `data` 字段里：`{ data: { model, messages } }` |
+| IDE 缓存旧代码，修改 api.js 不生效 | 3 | 菜单 → 清除缓存 → 清除编译缓存 → 重新编译 |
+| 真机报 `model hunyuan-v3/cloudbase not found in definitions` | 1 | 根因是手机微信版本过低，升级微信后 AI definitions 正常加载；不是云函数或额度问题 |
 
 ## 备注
 - 周笺小记的经验全部已录入 SKILLS.md（CSS兼容性+混元调用+数据安全+代码审查）

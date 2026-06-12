@@ -33,7 +33,7 @@ function buildSystemPrompt(holidayId, targetId, styleId) {
 - 100-200字，不要太长
 - 不套话、不群发感、有记忆点
 - 让收件人觉得是专属写给他的
-- 如果节日有emoji"${holiday.emoji || ''}"，可以适当融入
+- 不要使用 emoji 或特殊符号
 - 称呼要符合对象特征
 - 结尾自然，不要太生硬的"祝您..."
 

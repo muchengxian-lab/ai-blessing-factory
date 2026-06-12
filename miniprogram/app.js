@@ -1,8 +1,9 @@
-const AI = require('./utils/api.js');
-
 App({
   onLaunch() {
-    wx.cloud.init({ env: 'xinzhu-d7gtsc4pz7a9fa09b' });
+    wx.cloud.init({
+      env: 'xinzhu-d7gtsc4pz7a9fa09b',
+      traceUser: true,
+    });
     this.loadPrefs();
   },
 

@@ -10,7 +10,7 @@
 
     <view class="menu-item card" bindtap="onAbout">
       <image class="menu-icon" src="/images/icons/menu-info.svg"></image>
-      <text class="menu-label">关于心祝祝福语</text>
+      <text class="menu-label">关于心祝-祝福语</text>
       <text class="menu-arrow">›</text>
     </view>
 
@@ -28,7 +28,7 @@
   </view>
 
   <view class="footer">
-    <text>心祝祝福语 v1.0</text>
+    <text>心祝-祝福语 v1.0</text>
     <text class="footer-sub">AI生成，仅供参考 · 祝福由心</text>
   </view>
 

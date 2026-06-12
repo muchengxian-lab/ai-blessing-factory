@@ -58,11 +58,12 @@ Page({
         this.setData({ generating: false });
         const data = res.result;
         if (data && data.code === 'OK') {
+          this.reportFallbackIfNeeded(data);
           wx.navigateTo({
             url: `/pages/preview/preview?blessingId=${data.blessingId}`,
           });
         } else {
-          wx.showToast({ title: '生成失败，请重试', icon: 'none' });
+          wx.showToast({ title: (data && data.message) || '生成失败，请重试', icon: 'none' });
         }
       })
       .catch(err => {
@@ -72,9 +73,20 @@ Page({
       });
   },
 
+  reportFallbackIfNeeded(data) {
+    if (!data || data.source !== 'fallback') return;
+    const account = wx.getAccountInfoSync ? wx.getAccountInfoSync() : null;
+    const env = account && account.miniProgram ? account.miniProgram.envVersion : '';
+    const msg = data.aiErrorMessage || data.message || 'AI failed, fallback used';
+    console.warn('[generateBlessing] fallback used:', msg);
+    if (env !== 'release') {
+      wx.showToast({ title: 'AI失败，已用备用文案', icon: 'none' });
+    }
+  },
+
   onShareAppMessage() {
     return {
-      title: '心祝祝福语 - 30秒生成专属节日祝福',
+      title: '心祝-祝福语 - 30秒生成专属节日祝福',
       path: '/pages/index/index',
     };
   },

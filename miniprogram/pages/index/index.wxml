@@ -6,7 +6,7 @@
   <!-- Header -->
   <view class="header">
     <view class="header-star">✦</view>
-    <view class="header-title">心祝祝福语</view>
+    <view class="header-title">心祝-祝福语</view>
     <view class="header-sub">AI生成专属祝福语和节日海报</view>
     <view class="countdown" wx:if="{{upcomingHoliday}}">
       距 <text class="countdown-holiday">{{upcomingHoliday.name}}</text> 还有
@@ -43,8 +43,11 @@
 
   <!-- Generate -->
   <view class="generate-area">
-    <button class="btn-primary generate-btn" disabled="{{!canGenerate}}" bindtap="onGenerate" loading="{{generating}}">
-      {{generating ? loadingText : '生成祝福'}}
+    <button class="btn-primary generate-btn {{generating ? 'generate-btn-loading' : ''}}" disabled="{{!canGenerate}}" bindtap="onGenerate">
+      <view class="generate-content">
+        <view wx:if="{{generating}}" class="generate-spinner"></view>
+        <text class="generate-text">{{generating ? loadingText : '生成祝福'}}</text>
+      </view>
     </button>
   </view>
 

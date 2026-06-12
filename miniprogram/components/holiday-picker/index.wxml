@@ -1,4 +1,4 @@
-<scroll-view class="picker-scroll" scroll-x="true">
+<scroll-view class="picker-scroll" scroll-x="true" enhanced="{{true}}" show-scrollbar="{{false}}">
   <view class="picker-row">
     <view
       class="picker-item {{item.id === active ? 'picker-active' : ''}}"

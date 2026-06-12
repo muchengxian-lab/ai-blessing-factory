@@ -9,6 +9,7 @@ exports.main = async (event) => {
   try {
     await db.collection('share_events').add({
       data: {
+        _openid: wxContext.OPENID,
         userId: wxContext.OPENID,
         blessingId: blessingId || '',
         channel: channel || 'unknown',

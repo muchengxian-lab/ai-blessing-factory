@@ -1,6 +1,6 @@
-# 心祝祝福语 — Skills配置 & 强规则
+﻿# 心祝-祝福语 — Skills配置 & 强规则
 
-> 更新：2026-06-04 | 参考：周笺小记 SKILLS.md + CODE_REVIEW + 踩坑复盘
+> 更新：2026-06-13 | 参考：周笺小记 SKILLS.md + CODE_REVIEW + 踩坑复盘
 
 ---
 
@@ -116,13 +116,28 @@
 | `wx.navigateTo` 跳TabBar页面 | `wx.switchTab` |
 | TabBar页面中`navigateTo`跳非TabBar页后再返回 | 用非TabBar独立页 |
 
-### 混元AI调用
+### 混元/AI 调用
 
 | ❌ 不能做 | ✅ 正确做法 |
 |------|------|
-| 云函数中使用`cloud.ai` | `wx.cloud.extend.AI`（前端调用） |
+| 云函数中使用`cloud.ai` / `cloud.openapi.hunyuan.chatCompletions` | `wx.cloud.extend.AI`（前端调用） |
+| 云函数中用`@cloudbase/node-sdk`直接调AI作为主链路 | 云函数prepare/save，前端AI，失败fallback |
 | 基础库版本<3.7.1 | `project.config.json`中设libVersion为`3.15.1` |
 | 一次生成无频控 | 云函数加30秒频控（防烧Token） |
+| `createModel('cloudbase')` + 成长计划Token | `createModel('hunyuan-v3')` + `hy3-preview`（成长计划免费Token绑定在hunyuan-v3） |
+| `generateText` 在 hunyuan-v3 上 | 必须用 `streamText`（hunyuan-v3 不支持 generateText） |
+| `streamText` 参数直接传 | 参数必须包在 `data` 字段里：`{ data: { model, messages } }` |
+| 真机报 `model ... not found in definitions` 就改 provider | 先检查手机微信版本/基础库，旧版微信可能加载不到 AI definitions |
+
+**2026-06-12 最终结论：**
+- **Provider 体系：** `hunyuan-v3` = 小程序成长计划免费 Token，`cloudbase` = 需另外购买资源包。
+- **API 格式：** `wx.cloud.extend.AI.createModel('hunyuan-v3').streamText({ data: { model: 'hy3-preview', messages } })`
+- **响应解析：** SSE 流通过 `for await (const event of res.eventStream)` 消费，读取 `JSON.parse(event.data)?.choices?.[0]?.delta?.content`
+- **CloudBase AI+ 开通：** 控制台 → 左侧「AI+」（不是「扩展能力」）→ 快速接入
+- **IDE 缓存：** 修改代码后必须「清除缓存 → 清除编译缓存」并重新编译
+- **真机版本：** 开发者工具正常但真机 fallback，且报 `model hunyuan-v3/cloudbase not found in definitions` 时，优先升级手机微信版本；不要先误判为额度或云函数问题。
+- AI内容安全不通过时自动降级到内置 fallback 文案，不让用户主流程失败。
+- 周笺小记使用 `cloudbase` provider 正常是因为其环境计费模式不同，两个项目 AppID/CloudBase 环境完全独立。
 
 ### 数据安全（代码审查强制项）
 

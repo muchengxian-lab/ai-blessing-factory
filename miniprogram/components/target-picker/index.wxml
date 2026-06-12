@@ -1,13 +1,15 @@
-<view class="target-grid">
-  <view
-    class="target-item {{item.id === active ? 'target-active' : ''}}"
-    wx:for="{{targets}}"
-    wx:key="id"
-    wx:for-item="item"
-    bindtap="onSelect"
-    data-id="{{item.id}}"
-  >
-    <image class="target-icon" src="{{item.icon}}"></image>
-    <text class="target-name">{{item.name}}</text>
+<scroll-view class="target-scroll" scroll-x="true" enhanced="{{true}}" show-scrollbar="{{false}}">
+  <view class="target-row">
+    <view
+      class="target-item {{item.id === active ? 'target-active' : ''}}"
+      wx:for="{{targets}}"
+      wx:key="id"
+      wx:for-item="item"
+      bindtap="onSelect"
+      data-id="{{item.id}}"
+    >
+      <image class="target-icon" src="{{item.icon}}"></image>
+      <text class="target-name">{{item.name}}</text>
+    </view>
   </view>
-</view>
+</scroll-view>
